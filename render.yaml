@@ -1,0 +1,54 @@
+services:
+  - type: web
+    name: sahara-restaurant
+    runtime: node
+    region: us-east1
+    plan: free
+    
+    # GitHub repository configuration
+    repo: https://github.com/MI804-png/Sahara_Restaurant_Gergis
+    branch: main
+    autoDeploy: true
+    
+    # Build configuration
+    buildCommand: |
+      npm install
+      cd site && npm install && npm run build && cd ..
+    
+    # Start command - runs both backend and frontend
+    startCommand: node production-server.js
+    
+    # Environment variables (set these in Render dashboard or uncomment here)
+    envVars:
+      - key: NODE_ENV
+        value: production
+      # Optional: Set custom admin credentials
+      # - key: SAHARA_ADMIN_USERNAME
+      #   value: gorgtap
+      # - key: SAHARA_ADMIN_KEY
+      #   value: Sahara 612&0611
+      # - key: FRONTEND_PORT
+      #   value: "3000"
+      # - key: BACKEND_PORT
+      #   value: "4173"
+    
+    # Health check
+    healthCheckPath: /
+    healthCheckInterval: 30
+    
+    # Custom headers for PWA
+    headers:
+      - path: "/*"
+        headers:
+          - key: "X-Frame-Options"
+            value: "SAMEORIGIN"
+          - key: "X-Content-Type-Options"
+            value: "nosniff"
+          - key: "Cache-Control"
+            value: "public, max-age=3600"
+
+# Render Cron Jobs (optional - for future monitoring/maintenance)
+# cronJobs:
+#   - name: "Cleanup old data"
+#     schedule: "0 2 * * *"
+#     command: npm run cleanup

@@ -1,0 +1,80 @@
+# Dependencies
+node_modules/
+npm-debug.log*
+yarn-error.log*
+package-lock.json
+yarn.lock
+
+# Python virtual environment
+.venv/
+venv/
+env/
+__pycache__/
+*.py[cod]
+*.egg-info/
+
+# Build outputs
+dist/
+build/
+site/dist/
+site/build/
+*.tsbuildinfo
+
+# IDE and editor files
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+.DS_Store
+.env.local
+.env.*.local
+
+# Logs
+logs/
+*.log
+lerna-debug.log*
+
+# OS files
+Thumbs.db
+.DS_Store
+
+# Temporary files
+temp/
+tmp/
+*.tmp
+
+# Cache files
+.cache/
+.eslintcache
+
+# Vite cache
+site/node_modules/.vite/
+
+# Build assets - local only
+site/build-output.txt
+
+# Keep site-data.json as it's needed for deployment
+# !/site-data.json
+
+# Render build artifacts
+.render/
+.render_build/
+
+# AWS, GCP, Azure credentials
+*.pem
+*.key
+credentials.json
+
+# Environment files (use render.yaml for secrets)
+.env
+.env.production
+
+# Photos folder - only version control important ones
+photos/*.jpeg
+photos/*.jpg
+photos/*.png
+!photos/README.md
+
+# Tools
+tools/ffmpeg-release-essentials.zip

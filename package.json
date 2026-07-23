@@ -1,10 +1,21 @@
 {
 	"name": "sahara-restaurant-workspace",
+	"version": "1.0.0",
+	"description": "Multi-language restaurant website with admin dashboard",
+	"author": "Gergis (MI804)",
 	"private": true,
+	"engines": {
+		"node": ">=18.0.0"
+	},
 	"scripts": {
 		"dev": "npm --prefix site run dev",
 		"build": "npm --prefix site run build",
 		"serve": "node temp-server.cjs",
-		"start": "node temp-server.cjs"
-	}
+		"start": "node temp-server.cjs",
+		"production": "npm run build && node production-server.js",
+		"start-production": "node production-server.js",
+		"lint": "npm --prefix site run lint"
+	},
+	"dependencies": {},
+	"devDependencies": {}
 }
