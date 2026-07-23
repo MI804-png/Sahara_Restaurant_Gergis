@@ -11,7 +11,7 @@
 		"dev": "npm --prefix site run dev",
 		"build": "npm --prefix site install && npm --prefix site run build",
 		"serve": "node temp-server.cjs",
-		"start": "node temp-server.cjs",
+		"start": "node production-server.js",
 		"production": "npm run build && node production-server.js",
 		"start-production": "node production-server.js",
 		"lint": "npm --prefix site run lint"
