@@ -1,0 +1,86 @@
+@import url('https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;700;800&family=Cormorant+Garamond:wght@500;600;700&family=Noto+Naskh+Arabic:wght@400;500;600;700&display=swap');
+
+:root {
+  --sand-50: #fcf5e9;
+  --sand-100: #f5e4cb;
+  --sand-200: #ead1ad;
+  --ink-900: #1f140d;
+  --ink-700: #4f3423;
+  --ink-600: #6d4a34;
+  --ink-500: #8f6b52;
+  --accent-800: #6f3417;
+  --accent-700: #8d3e1c;
+  --shadow-soft: 0 12px 28px rgba(109, 54, 25, 0.08);
+  --font-body: 'Manrope', sans-serif;
+  --font-heading: 'Cormorant Garamond', serif;
+  --font-arabic: 'Noto Naskh Arabic', serif;
+  --font-arabic-display: 'Noto Naskh Arabic', serif;
+  color: var(--ink-700);
+  background: var(--sand-50);
+  font-family: var(--font-body);
+  font-synthesis: none;
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  line-height: 1.6;
+  font-weight: 400;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html {
+  scroll-behavior: smooth;
+  overflow-x: hidden;
+}
+
+body {
+  margin: 0;
+  min-width: 320px;
+  min-height: 100svh;
+  overflow-x: hidden;
+  background: linear-gradient(180deg, #fff9ef 0%, #f4e3c8 100%);
+  color: var(--ink-700);
+}
+
+a,
+button,
+input,
+textarea,
+select {
+  font: inherit;
+}
+
+button {
+  cursor: pointer;
+}
+
+img,
+video {
+  display: block;
+}
+
+h1,
+h2,
+h3 {
+  color: var(--ink-900);
+  font-family: var(--font-heading);
+  font-weight: 700;
+  line-height: 0.95;
+  letter-spacing: -0.03em;
+}
+
+p {
+  margin: 0;
+}
+
+#root {
+  min-height: 100svh;
+  overflow-x: hidden;
+}
+
+::selection {
+  background: rgba(186, 100, 50, 0.24);
+  color: var(--ink-900);
+}

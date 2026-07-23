@@ -1,0 +1,19 @@
+{
+  "name": "Sahara Restaurant",
+  "short_name": "Sahara",
+  "lang": "hu",
+  "start_url": "/",
+  "scope": "/",
+  "display": "standalone",
+  "background_color": "#fcf5e9",
+  "theme_color": "#8d3e1c",
+  "description": "Multilingual Sahara Restaurant website for Hungary with owner-approved video gallery and mobile install support.",
+  "icons": [
+    {
+      "src": "/sahara-mark.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any"
+    }
+  ]
+}
