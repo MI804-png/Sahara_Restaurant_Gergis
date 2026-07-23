@@ -11,9 +11,7 @@ services:
     autoDeploy: true
     
     # Build configuration
-    buildCommand: |
-      npm install
-      cd site && npm install && npm run build && cd ..
+    buildCommand: npm install && npm --prefix site install && npm run build
     
     # Start command - runs both backend and frontend
     startCommand: node production-server.js
