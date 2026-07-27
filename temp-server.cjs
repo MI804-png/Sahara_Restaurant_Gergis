@@ -325,7 +325,15 @@ function normalizeSiteData(payload) {
       text: normalizeOptionalText(siteData.announcement && siteData.announcement.text, 300),
       enabled: normalizeBoolean(siteData.announcement && siteData.announcement.enabled, false),
     },
-    eventEnabled: normalizeBoolean(siteData.eventEnabled, true),
+    event: {
+      enabled: normalizeBoolean(siteData.event && siteData.event.enabled, false),
+      showFrom: normalizeDateTimeLocal(siteData.event && siteData.event.showFrom),
+      showUntil: normalizeDateTimeLocal(siteData.event && siteData.event.showUntil),
+      registrationOpen: normalizeDateTimeLocal(siteData.event && siteData.event.registrationOpen),
+      registrationClose: normalizeDateTimeLocal(siteData.event && siteData.event.registrationClose),
+      eventDate: normalizeOptionalText(siteData.event && siteData.event.eventDate, 100),
+      eventTime: normalizeOptionalText(siteData.event && siteData.event.eventTime, 60),
+    },
   }
 }
 

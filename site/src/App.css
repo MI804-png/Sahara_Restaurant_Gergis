@@ -2214,6 +2214,83 @@
   color: var(--ink-600, #7c5043);
 }
 
+.admin-section-label {
+  margin: 20px 0 8px;
+  font-size: 0.82rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  color: var(--ink-600, #7c5043);
+}
+
+/* Admin event status badges */
+.event-admin-status-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-bottom: 4px;
+}
+
+.event-admin-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 6px 14px;
+  border-radius: 999px;
+  font-size: 0.82rem;
+  font-weight: 600;
+}
+
+.badge-live {
+  background: rgba(34, 197, 94, 0.12);
+  color: #166534;
+  border: 1px solid rgba(34, 197, 94, 0.3);
+}
+
+.badge-soon {
+  background: rgba(245, 158, 11, 0.12);
+  color: #92400e;
+  border: 1px solid rgba(245, 158, 11, 0.3);
+}
+
+.badge-off {
+  background: rgba(156, 163, 175, 0.15);
+  color: #6b7280;
+  border: 1px solid rgba(156, 163, 175, 0.3);
+}
+
+/* Public site: registration status */
+.event-reg-status {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  padding: 14px 20px;
+  border-radius: 16px;
+  align-self: flex-start;
+}
+
+.event-reg-status span {
+  font-weight: 700;
+  font-size: 0.95rem;
+}
+
+.event-reg-status small {
+  font-size: 0.8rem;
+  opacity: 0.75;
+}
+
+.event-reg-soon {
+  background: rgba(251, 191, 36, 0.15);
+  border: 1.5px solid rgba(251, 191, 36, 0.5);
+  color: #92400e;
+}
+
+.event-reg-closed {
+  background: rgba(156, 163, 175, 0.15);
+  border: 1.5px solid rgba(156, 163, 175, 0.4);
+  color: #6b7280;
+}
+
 .event-pairs-panel {
   margin-top: 20px;
 }

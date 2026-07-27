@@ -90,7 +90,16 @@ function normalizeSiteData(siteData) {
       text: String(siteData.announcement && siteData.announcement.text || '').trim().slice(0, 300),
       enabled: Boolean(siteData.announcement && siteData.announcement.enabled),
     },
-    eventEnabled: siteData.eventEnabled !== false,
+    event: {
+      enabled: Boolean(siteData.event && siteData.event.enabled),
+      showFrom: String(siteData.event && siteData.event.showFrom || '').trim(),
+      showUntil: String(siteData.event && siteData.event.showUntil || '').trim(),
+      registrationOpen: String(siteData.event && siteData.event.registrationOpen || '').trim(),
+      registrationClose: String(siteData.event && siteData.event.registrationClose || '').trim(),
+      eventDate: String(siteData.event && siteData.event.eventDate || '').trim().slice(0, 100),
+      eventTime: String(siteData.event && siteData.event.eventTime || '').trim().slice(0, 60),
+    },
+    eventEnabled: undefined,
   };
 }
 

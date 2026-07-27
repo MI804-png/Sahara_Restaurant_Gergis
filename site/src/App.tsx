@@ -24,6 +24,7 @@ import {
   type OfferStatus,
   type SiteData,
   type SiteDataResponse,
+  type SiteEvent,
   type SiteMetrics,
   type SiteOffer,
   DAYS,
@@ -508,6 +509,36 @@ function App() {
   const salesSummary = getSalesSummary(siteData, now)
   const liveOfferCount = offerCards.filter((card) => card.status === 'live').length
   const lastVisitLabel = metrics.lastVisitedAt ? formatSavedAt(locale, metrics.lastVisitedAt) : null
+
+  // Event: compute schedule-aware visibility and registration status
+  const isEventVisible = (() => {
+    const ev = siteData.event
+    if (!ev?.enabled) return false
+    const n = now.getTime()
+    if (ev.showFrom) {
+      const from = new Date(ev.showFrom)
+      if (!Number.isNaN(from.getTime()) && n < from.getTime()) return false
+    }
+    if (ev.showUntil) {
+      const until = new Date(ev.showUntil)
+      if (!Number.isNaN(until.getTime()) && n > until.getTime()) return false
+    }
+    return true
+  })()
+
+  const eventRegStatus: 'open' | 'not_started' | 'closed' = (() => {
+    const ev = siteData.event
+    const n = now.getTime()
+    if (ev?.registrationOpen) {
+      const from = new Date(ev.registrationOpen)
+      if (!Number.isNaN(from.getTime()) && n < from.getTime()) return 'not_started'
+    }
+    if (ev?.registrationClose) {
+      const until = new Date(ev.registrationClose)
+      if (!Number.isNaN(until.getTime()) && n > until.getTime()) return 'closed'
+    }
+    return 'open'
+  })()
   const heroBadges =
     liveOfferCount > 0
       ? [...copy.heroBadges, `${liveOfferCount} live offer${liveOfferCount === 1 ? '' : 's'}`]
@@ -823,8 +854,11 @@ function App() {
     }))
   }
 
-  const handleEventEnabledChange = (enabled: boolean) => {
-    updateSiteData((current) => ({ ...current, eventEnabled: enabled }))
+  const handleEventChange = (field: keyof SiteEvent, value: string | boolean) => {
+    updateSiteData((current) => ({
+      ...current,
+      event: { ...current.event, [field]: value },
+    }))
   }
 
   const handleEventSubmit = async (e: React.FormEvent) => {
@@ -1798,8 +1832,10 @@ function App() {
         </section>
 
         {/* ── Blind Date Night event section ────────────────────────── */}
-        {siteData.eventEnabled ? (() => {
+        {isEventVisible ? (() => {
           const ec = EVENT_CONTENT[locale]
+          const displayDate = siteData.event.eventDate || ec.date
+          const displayTime = siteData.event.eventTime || ec.time
           return (
           <section className="panel-section event-panel" id="events" data-reveal>
             <div className="section-header">
@@ -1829,22 +1865,46 @@ function App() {
                 </div>
 
                 <div className="event-meta">
-                  <span className="event-meta-item">📅 {ec.date}</span>
-                  <span className="event-meta-item">🕖 {ec.time}</span>
+                  <span className="event-meta-item">📅 {displayDate}</span>
+                  <span className="event-meta-item">🕖 {displayTime}</span>
                   <span className="event-meta-item">📍 {ec.location}</span>
                 </div>
 
-                <button
-                  type="button"
-                  className="button primary event-register-btn"
-                  onClick={() => { setShowEventModal(true); setEventSubmitted(false) }}
-                >
-                  {ec.registerBtn}
-                </button>
+                {eventRegStatus === 'open' ? (
+                  <button
+                    type="button"
+                    className="button primary event-register-btn"
+                    onClick={() => { setShowEventModal(true); setEventSubmitted(false) }}
+                  >
+                    {ec.registerBtn}
+                  </button>
+                ) : eventRegStatus === 'not_started' ? (
+                  <div className="event-reg-status event-reg-soon">
+                    <span>
+                      {locale === 'hu' ? 'Regisztráció hamarosan nyílik' :
+                       locale === 'ar' ? 'يفتح التسجيل قريباً' :
+                       'Registration opens soon'}
+                    </span>
+                    {siteData.event.registrationOpen ? (
+                      <small>{new Intl.DateTimeFormat(
+                        locale === 'hu' ? 'hu-HU' : locale === 'ar' ? 'ar-EG' : 'en-US',
+                        { dateStyle: 'medium', timeStyle: 'short' }
+                      ).format(new Date(siteData.event.registrationOpen))}</small>
+                    ) : null}
+                  </div>
+                ) : (
+                  <div className="event-reg-status event-reg-closed">
+                    <span>
+                      {locale === 'hu' ? 'A regisztráció lezárult' :
+                       locale === 'ar' ? 'انتهى التسجيل' :
+                       'Registration closed'}
+                    </span>
+                  </div>
+                )}
               </div>
             </div>
 
-            {/* Google AdSense placeholder – replace innerHTML with real ad tag once account is activated */}
+            {/* Google AdSense placeholder – replace with real ad tag once account is activated */}
             <div className="ad-slot" aria-label="Advertisement" role="complementary">
               <span className="ad-slot-label">Ad</span>
               {/* <ins className="adsbygoogle" style={{ display: 'block' }}
@@ -2064,22 +2124,103 @@ function App() {
             {/* ── Blind Date Night event registrations admin ────────────── */}
             <article className="admin-card admin-card-full" data-reveal>
               <div className="admin-card-head">
-                <h3>Blind Date Night – Event &amp; Registrations</h3>
-                <span>Control event visibility on the main page and view all registrations.</span>
+                <h3>Blind Date Night – Schedule &amp; Registrations</h3>
+                <span>Set when the event appears on the website and control the registration window.</span>
               </div>
 
+              {/* Status indicators */}
+              <div className="event-admin-status-row">
+                <span className={`event-admin-badge ${isEventVisible ? 'badge-live' : 'badge-off'}`}>
+                  {isEventVisible ? '🟢 Event visible on site' : '⚫ Event hidden from site'}
+                </span>
+                <span className={`event-admin-badge ${eventRegStatus === 'open' ? 'badge-live' : eventRegStatus === 'not_started' ? 'badge-soon' : 'badge-off'}`}>
+                  {eventRegStatus === 'open' ? '🟢 Registration open' :
+                   eventRegStatus === 'not_started' ? '🟡 Registration not started' :
+                   '🔴 Registration closed'}
+                </span>
+              </div>
+
+              {/* Enable toggle */}
               <label className="admin-toggle-field">
                 <input
                   type="checkbox"
-                  checked={siteData.eventEnabled ?? true}
-                  onChange={(e) => handleEventEnabledChange(e.target.checked)}
+                  checked={siteData.event?.enabled ?? false}
+                  onChange={(e) => handleEventChange('enabled', e.target.checked)}
                 />
-                <span>Show Blind Date Night section on website</span>
+                <span>Enable Blind Date Night section</span>
               </label>
+
+              {/* Schedule window */}
+              <p className="admin-section-label">Visibility schedule (optional – leave empty to show/hide manually)</p>
+              <div className="admin-field-row">
+                <label className="admin-field">
+                  <span>Show from</span>
+                  <input
+                    type="datetime-local"
+                    value={siteData.event?.showFrom ?? ''}
+                    onChange={(e) => handleEventChange('showFrom', e.target.value)}
+                  />
+                </label>
+                <label className="admin-field">
+                  <span>Hide after</span>
+                  <input
+                    type="datetime-local"
+                    value={siteData.event?.showUntil ?? ''}
+                    onChange={(e) => handleEventChange('showUntil', e.target.value)}
+                  />
+                </label>
+              </div>
+
+              {/* Registration window */}
+              <p className="admin-section-label">Registration period (optional)</p>
+              <div className="admin-field-row">
+                <label className="admin-field">
+                  <span>Registration opens</span>
+                  <input
+                    type="datetime-local"
+                    value={siteData.event?.registrationOpen ?? ''}
+                    onChange={(e) => handleEventChange('registrationOpen', e.target.value)}
+                  />
+                </label>
+                <label className="admin-field">
+                  <span>Registration closes</span>
+                  <input
+                    type="datetime-local"
+                    value={siteData.event?.registrationClose ?? ''}
+                    onChange={(e) => handleEventChange('registrationClose', e.target.value)}
+                  />
+                </label>
+              </div>
+
+              {/* Display text shown to visitors */}
+              <p className="admin-section-label">Event date &amp; time text shown to visitors</p>
+              <div className="admin-field-row">
+                <label className="admin-field">
+                  <span>Event date (display text)</span>
+                  <input
+                    type="text"
+                    maxLength={100}
+                    value={siteData.event?.eventDate ?? ''}
+                    onChange={(e) => handleEventChange('eventDate', e.target.value)}
+                    placeholder="e.g. Saturday, 2 Aug 2026"
+                  />
+                </label>
+                <label className="admin-field">
+                  <span>Event time (display text)</span>
+                  <input
+                    type="text"
+                    maxLength={60}
+                    value={siteData.event?.eventTime ?? ''}
+                    onChange={(e) => handleEventChange('eventTime', e.target.value)}
+                    placeholder="e.g. 19:00 – 23:00"
+                  />
+                </label>
+              </div>
 
               <button
                 type="button"
                 className="button secondary"
+                style={{ marginTop: '8px' }}
                 onClick={() => void loadEventRegistrations()}
                 disabled={isLoadingRegistrations}
               >

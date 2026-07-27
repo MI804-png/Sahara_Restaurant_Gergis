@@ -75,6 +75,16 @@ export type Announcement = {
   enabled: boolean
 }
 
+export type SiteEvent = {
+  enabled: boolean
+  showFrom: string        // datetime-local; empty = show immediately when enabled
+  showUntil: string       // datetime-local; empty = no end
+  registrationOpen: string   // datetime-local; empty = always open
+  registrationClose: string  // datetime-local; empty = no closing date
+  eventDate: string       // free text shown to visitors (e.g. "Saturday, 2 Aug 2026")
+  eventTime: string       // free text shown to visitors (e.g. "19:00 – 23:00")
+}
+
 export type EventRegistration = {
   id: string
   name: string
@@ -97,7 +107,7 @@ export type SiteData = {
   business: SiteBusinessDetails
   pricing: PricingSettings
   announcement: Announcement
-  eventEnabled: boolean
+  event: SiteEvent
   menuSections: EditableMenuSection[]
   menuEvidenceImages: EditableMenuEvidenceImage[]
   galleryImages: EditableGalleryImage[]
@@ -221,7 +231,15 @@ export const defaultSiteData: SiteData = {
   menuEvidenceImages: buildDefaultMenuEvidenceImages(),
   galleryImages: buildDefaultGalleryImages(),
   announcement: { text: '', enabled: false },
-  eventEnabled: true,
+  event: {
+    enabled: false,
+    showFrom: '',
+    showUntil: '',
+    registrationOpen: '',
+    registrationClose: '',
+    eventDate: '',
+    eventTime: '',
+  },
   offers: [],
   productSales: [],
 }
@@ -285,7 +303,15 @@ export function cloneSiteData(siteData: SiteData): SiteData {
       text: siteData.announcement?.text ?? '',
       enabled: siteData.announcement?.enabled ?? false,
     },
-    eventEnabled: siteData.eventEnabled ?? true,
+    event: {
+      enabled: siteData.event?.enabled ?? false,
+      showFrom: siteData.event?.showFrom ?? '',
+      showUntil: siteData.event?.showUntil ?? '',
+      registrationOpen: siteData.event?.registrationOpen ?? '',
+      registrationClose: siteData.event?.registrationClose ?? '',
+      eventDate: siteData.event?.eventDate ?? '',
+      eventTime: siteData.event?.eventTime ?? '',
+    },
     productSales: siteData.productSales.map((entry) => ({
       itemId: entry.itemId,
       quantitySold: entry.quantitySold,
