@@ -285,6 +285,7 @@ function App() {
   const [saveMessage, setSaveMessage] = useState<string | null>(null)
   const [saveError, setSaveError] = useState<string | null>(null)
   const [restorableSiteData, setRestorableSiteData] = useState<SiteData | null>(null)
+  const [undoToast, setUndoToast] = useState<{ message: string } | null>(null)
   const [selectedEditorItemId, setSelectedEditorItemId] = useState('')
   const [now, setNow] = useState(() => new Date())
   const normalizedPath = window.location.pathname.replace(/\/+$/, '') || '/'
@@ -466,6 +467,20 @@ function App() {
       window.clearInterval(interval)
     }
   }, [])
+
+  useEffect(() => {
+    if (!undoToast) {
+      return
+    }
+
+    const timer = window.setTimeout(() => {
+      setUndoToast(null)
+    }, 8000)
+
+    return () => {
+      window.clearTimeout(timer)
+    }
+  }, [undoToast])
 
   useEffect(() => {
     if (isAdminRoute) {
@@ -687,6 +702,7 @@ function App() {
     }
 
     setRestorableSiteData(cloneSiteData(siteData))
+    setUndoToast({ message: `Section "${section.title || 'Untitled'}" deleted` })
     updateSiteData((current) => {
       const deletedSection = current.menuSections.find((section) => section.id === sectionId)
       const deletedItemIds = deletedSection ? deletedSection.items.map((item) => item.id) : []
@@ -700,7 +716,7 @@ function App() {
         ),
       }
     })
-    setSaveMessage('Section deleted. Use "Restore last delete" if this was not intended.')
+    setSaveMessage('Section deleted.')
   }
 
   const handleAddItem = (sectionId: string) => {
@@ -754,6 +770,7 @@ function App() {
     }
 
     setRestorableSiteData(cloneSiteData(siteData))
+    setUndoToast({ message: `"${item.name}" deleted` })
     updateSiteData((current) => ({
       ...current,
       menuSections: current.menuSections.map((section) =>
@@ -767,7 +784,7 @@ function App() {
       offers: current.offers.filter((offer) => offer.itemId !== itemId),
       productSales: current.productSales.filter((entry) => entry.itemId !== itemId),
     }))
-    setSaveMessage('Product deleted. Use "Restore last delete" if needed.')
+    setSaveMessage('Product deleted.')
   }
 
   const handleMenuImageChange = (
@@ -817,11 +834,12 @@ function App() {
     }
 
     setRestorableSiteData(cloneSiteData(siteData))
+    setUndoToast({ message: `"${image.timestamp || 'Image'}" deleted` })
     updateSiteData((current) => ({
       ...current,
       menuEvidenceImages: current.menuEvidenceImages.filter((image) => image.id !== imageId),
     }))
-    setSaveMessage('Image deleted. Use "Restore last delete" to bring it back.')
+    setSaveMessage('Image deleted.')
   }
 
   const handleAddGalleryImage = () => {
@@ -833,11 +851,12 @@ function App() {
 
   const handleDeleteGalleryImage = (imageId: string) => {
     setRestorableSiteData(cloneSiteData(siteData))
+    setUndoToast({ message: 'Gallery image deleted' })
     updateSiteData((current) => ({
       ...current,
       galleryImages: current.galleryImages.filter((image) => image.id !== imageId),
     }))
-    setSaveMessage('Gallery image deleted. Use "Restore last delete" if required.')
+    setSaveMessage('Gallery image deleted.')
   }
 
   const handleAddOffer = () => {
@@ -862,11 +881,12 @@ function App() {
     }
 
     setRestorableSiteData(cloneSiteData(siteData))
+    setUndoToast({ message: `"${offer.title || 'Offer'}" deleted` })
     updateSiteData((current) => ({
       ...current,
       offers: current.offers.filter((offer) => offer.id !== offerId),
     }))
-    setSaveMessage('Offer deleted. Use "Restore last delete" if needed.')
+    setSaveMessage('Offer deleted.')
   }
 
   const handleSalesQuantityChange = (itemId: string, value: string) => {
@@ -2519,6 +2539,30 @@ function App() {
         </div>
       </footer>
       )}
+
+      {isAdminRoute && undoToast ? (
+        <div className="undo-toast" role="status">
+          <span className="undo-toast-message">{undoToast.message}</span>
+          <button
+            type="button"
+            className="button primary undo-toast-btn"
+            onClick={() => {
+              handleRestoreLastDelete()
+              setUndoToast(null)
+            }}
+          >
+            Undo
+          </button>
+          <button
+            type="button"
+            className="undo-toast-close"
+            onClick={() => setUndoToast(null)}
+            aria-label="Dismiss"
+          >
+            ✕
+          </button>
+        </div>
+      ) : null}
     </div>
   )
 }
