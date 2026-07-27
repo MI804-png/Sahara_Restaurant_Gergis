@@ -70,6 +70,23 @@ export type PricingSettings = {
   taxPercent: number
 }
 
+export type Announcement = {
+  text: string
+  enabled: boolean
+}
+
+export type EventRegistration = {
+  id: string
+  name: string
+  age: string
+  gender: string
+  interests: string
+  personality: string
+  lookingFor: string
+  rating: number
+  registeredAt: string
+}
+
 export type SiteMetrics = {
   totalVisits: number
   lastVisitedAt: string | null
@@ -79,6 +96,7 @@ export type SiteData = {
   hours: SiteHours
   business: SiteBusinessDetails
   pricing: PricingSettings
+  announcement: Announcement
   menuSections: EditableMenuSection[]
   menuEvidenceImages: EditableMenuEvidenceImage[]
   galleryImages: EditableGalleryImage[]
@@ -201,6 +219,7 @@ export const defaultSiteData: SiteData = {
   menuSections: buildDefaultMenuSections(),
   menuEvidenceImages: buildDefaultMenuEvidenceImages(),
   galleryImages: buildDefaultGalleryImages(),
+  announcement: { text: '', enabled: false },
   offers: [],
   productSales: [],
 }
@@ -260,6 +279,10 @@ export function cloneSiteData(siteData: SiteData): SiteData {
       redeemedClients: offer.redeemedClients,
       enabled: offer.enabled,
     })),
+    announcement: {
+      text: siteData.announcement?.text ?? '',
+      enabled: siteData.announcement?.enabled ?? false,
+    },
     productSales: siteData.productSales.map((entry) => ({
       itemId: entry.itemId,
       quantitySold: entry.quantitySold,

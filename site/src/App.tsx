@@ -20,6 +20,7 @@ import {
   getSalesQuantity,
   getSalesSummary,
   type DayKey,
+  type EventRegistration,
   type OfferStatus,
   type SiteData,
   type SiteDataResponse,
@@ -46,6 +47,108 @@ const DAY_LABELS: Record<DayKey, Record<'hu' | 'en' | 'ar', string>> = {
   saturday:  { hu: 'Szombat',   en: 'Saturday',  ar: 'السبت'    },
   sunday:    { hu: 'Vasárnap',  en: 'Sunday',    ar: 'الأحد'    },
 }
+
+const EVENT_CONTENT = {
+  hu: {
+    eyebrow: 'Különleges este',
+    title: 'Vak Randevú Est',
+    subtitle: 'Találd meg a párod egy varázslatos esti vacsoraest keretein belül a Sahara Étteremben',
+    step1: 'Töltsd ki a kérdőívünket',
+    step2: 'Elemezzük a kompatibilitást',
+    step3: 'Ismerkedj meg vacsorán',
+    date: 'Minden szombat este',
+    time: '19:00 – 23:00',
+    location: 'Sahara Restaurant, Budapest',
+    registerBtn: 'Regisztrálok az estre',
+    modalTitle: 'Regisztráció – Vak Randevú Est',
+    fieldName: 'Teljes neved',
+    fieldAge: 'Korod',
+    fieldGender: 'Nemed',
+    fieldInterests: 'Érdeklődési körök (pl. zene, sport, főzés)',
+    fieldPersonality: 'Személyiség típusod',
+    fieldLookingFor: 'Mit keresel egy partnerben?',
+    fieldRating: 'Önértékelés (1 = szerény, 5 = magabiztos)',
+    fieldTerms: 'Elfogadom az adatvédelmi irányelveket',
+    submitBtn: 'Küldés',
+    submitting: 'Küldés...',
+    successTitle: 'Köszönjük a regisztrációdat! 🎉',
+    successText: 'Hamarosan felvesszük veled a kapcsolatot a WhatsAppon vagy e-mailben.',
+    genders: { female: 'Nő', male: 'Férfi', other: 'Egyéb' },
+    personalities: {
+      romantic: 'Romantikus',
+      adventurous: 'Kalandvágyó',
+      intellectual: 'Intellektuális',
+      creative: 'Kreatív',
+      spontaneous: 'Spontán',
+    },
+  },
+  en: {
+    eyebrow: 'Special Evening',
+    title: 'Blind Date Night',
+    subtitle: 'Find your perfect match over a magical dinner evening at Sahara Restaurant',
+    step1: 'Fill out our questionnaire',
+    step2: 'We analyse compatibility',
+    step3: 'Meet your match at dinner',
+    date: 'Every Saturday evening',
+    time: '7:00 PM – 11:00 PM',
+    location: 'Sahara Restaurant, Budapest',
+    registerBtn: 'Register for the event',
+    modalTitle: 'Register – Blind Date Night',
+    fieldName: 'Full name',
+    fieldAge: 'Your age',
+    fieldGender: 'Gender',
+    fieldInterests: 'Interests (e.g. music, sport, cooking)',
+    fieldPersonality: 'Personality type',
+    fieldLookingFor: 'What are you looking for in a partner?',
+    fieldRating: 'Self-rating (1 = modest, 5 = confident)',
+    fieldTerms: 'I accept the privacy policy',
+    submitBtn: 'Submit',
+    submitting: 'Submitting...',
+    successTitle: 'Thank you for registering! 🎉',
+    successText: "We'll contact you shortly via WhatsApp or email.",
+    genders: { female: 'Female', male: 'Male', other: 'Other' },
+    personalities: {
+      romantic: 'Romantic',
+      adventurous: 'Adventurous',
+      intellectual: 'Intellectual',
+      creative: 'Creative',
+      spontaneous: 'Spontaneous',
+    },
+  },
+  ar: {
+    eyebrow: 'سهرة مميزة',
+    title: 'ليلة المواعدة العمياء',
+    subtitle: 'ابحث عن نصفك الآخر في سهرة عشاء رومانسية بمطعم الصحراء',
+    step1: 'أجب على استبياننا',
+    step2: 'نحلل مدى التوافق',
+    step3: 'التقِ بشريكك على العشاء',
+    date: 'كل سبت مساءً',
+    time: '٧:٠٠ م – ١١:٠٠ م',
+    location: 'مطعم الصحراء، بودابست',
+    registerBtn: 'سجّل في الفعالية',
+    modalTitle: 'التسجيل – ليلة المواعدة العمياء',
+    fieldName: 'الاسم الكامل',
+    fieldAge: 'عمرك',
+    fieldGender: 'الجنس',
+    fieldInterests: 'الاهتمامات (مثل الموسيقى والرياضة والطبخ)',
+    fieldPersonality: 'نوع شخصيتك',
+    fieldLookingFor: 'ما الذي تبحث عنه في الشريك؟',
+    fieldRating: 'تقييم الذات (١ = متواضع، ٥ = واثق)',
+    fieldTerms: 'أوافق على سياسة الخصوصية',
+    submitBtn: 'إرسال',
+    submitting: '...إرسال',
+    successTitle: '!شكراً لتسجيلك 🎉',
+    successText: 'سنتواصل معك قريباً عبر واتساب أو البريد الإلكتروني.',
+    genders: { female: 'أنثى', male: 'ذكر', other: 'غير ذلك' },
+    personalities: {
+      romantic: 'رومانسي',
+      adventurous: 'مغامر',
+      intellectual: 'مثقف',
+      creative: 'مبدع',
+      spontaneous: 'تلقائي',
+    },
+  },
+} as const
 const apiPaths = {
   siteData: '/api/site-data',
   trackVisit: '/api/track-visit',
@@ -274,6 +377,37 @@ function escapeHtml(value: string) {
     .replaceAll("'", '&#39;')
 }
 
+function getCompatibilityScore(a: EventRegistration, b: EventRegistration): number {
+  let score = 0
+  const genders = [a.gender, b.gender].sort()
+  if (genders[0] === 'female' && genders[1] === 'male') score += 40
+  else score += 20
+  const compat: Record<string, string[]> = {
+    adventurous: ['spontaneous', 'romantic'],
+    romantic: ['intellectual', 'adventurous'],
+    intellectual: ['creative', 'romantic'],
+    creative: ['intellectual', 'adventurous'],
+    spontaneous: ['adventurous', 'creative'],
+  }
+  if (a.personality === b.personality) score += 30
+  else if (compat[a.personality]?.includes(b.personality)) score += 20
+  const ai = a.interests.toLowerCase().split(/[,;\s]+/).filter(Boolean)
+  const bi = b.interests.toLowerCase().split(/[,;\s]+/).filter(Boolean)
+  score += Math.min(ai.filter((x) => bi.includes(x)).length * 10, 30)
+  const ageDiff = Math.abs(Number(a.age) - Number(b.age))
+  if (ageDiff <= 5) score += 10
+  else if (ageDiff <= 10) score += 5
+  return Math.min(score, 100)
+}
+
+function getCompatibilityLabel(score: number): string {
+  if (score >= 85) return '💫 Perfect Match'
+  if (score >= 70) return '❤️ Great Match'
+  if (score >= 55) return '👍 Good Match'
+  if (score >= 40) return '🤝 Possible Match'
+  return '🔍 Exploring'
+}
+
 function App() {
   const [locale, setLocale] = useState<Locale>('hu')
   const [installPrompt, setInstallPrompt] = useState<BeforeInstallPromptEvent | null>(null)
@@ -299,6 +433,19 @@ function App() {
   const [undoToast, setUndoToast] = useState<{ message: string } | null>(null)
   const [selectedEditorItemId, setSelectedEditorItemId] = useState('')
   const [now, setNow] = useState(() => new Date())
+  // Announcement
+  const [announcementDismissed, setAnnouncementDismissed] = useState(false)
+  // Blind Date Night event
+  const [showEventModal, setShowEventModal] = useState(false)
+  const [eventForm, setEventForm] = useState({
+    name: '', age: '', gender: 'female',
+    interests: '', personality: 'romantic',
+    lookingFor: '', rating: 5, terms: false,
+  })
+  const [eventSubmitting, setEventSubmitting] = useState(false)
+  const [eventSubmitted, setEventSubmitted] = useState(false)
+  const [eventRegistrations, setEventRegistrations] = useState<EventRegistration[]>([])
+  const [isLoadingRegistrations, setIsLoadingRegistrations] = useState(false)
   const normalizedPath = window.location.pathname.replace(/\/+$/, '') || '/'
   const isAdminRoute = normalizedPath === '/admin'
 
@@ -655,6 +802,61 @@ function App() {
         },
       },
     }))
+  }
+
+  const handleAnnouncementChange = (field: 'text' | 'enabled', value: string | boolean) => {
+    updateSiteData((current) => ({
+      ...current,
+      announcement: { ...current.announcement, [field]: value },
+    }))
+  }
+
+  const handleEventSubmit = async (e: React.FormEvent) => {
+    e.preventDefault()
+    if (!eventForm.terms) return
+    setEventSubmitting(true)
+    try {
+      await fetch('/api/register-event', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          name: eventForm.name,
+          age: eventForm.age,
+          gender: eventForm.gender,
+          interests: eventForm.interests,
+          personality: eventForm.personality,
+          lookingFor: eventForm.lookingFor,
+          rating: eventForm.rating,
+        }),
+      })
+      setEventSubmitted(true)
+    } catch {
+      // allow submit to appear successful even if offline
+      setEventSubmitted(true)
+    } finally {
+      setEventSubmitting(false)
+    }
+  }
+
+  const loadEventRegistrations = async () => {
+    if (isLoadingRegistrations) return
+    setIsLoadingRegistrations(true)
+    try {
+      const response = await fetch('/api/admin/event-registrations', {
+        headers: {
+          'x-admin-username': adminUsername.trim(),
+          'x-admin-key': adminKey.trim(),
+        },
+      })
+      if (response.ok) {
+        const data = (await response.json()) as { ok: boolean; registrations: EventRegistration[] }
+        setEventRegistrations(data.registrations ?? [])
+      }
+    } catch {
+      // silently fail
+    } finally {
+      setIsLoadingRegistrations(false)
+    }
   }
 
   const handleBusinessChange = (
@@ -1156,6 +1358,20 @@ function App() {
       <main className={isAdminRoute ? 'page-layout admin-page-layout' : 'page-layout'}>
         {!isAdminRoute ? (
           <>
+        {/* ── Announcement banner ─────────────────────────────────────── */}
+        {!announcementDismissed && siteData.announcement?.enabled && siteData.announcement.text ? (
+          <div className="announcement-banner" role="status">
+            <p className="announcement-text">{siteData.announcement.text}</p>
+            <button
+              type="button"
+              className="announcement-close"
+              aria-label="Close announcement"
+              onClick={() => setAnnouncementDismissed(true)}
+            >
+              ✕
+            </button>
+          </div>
+        ) : null}
         <section className="hero-section" id="top" data-reveal>
           <div className="hero-copy">
             <p className="eyebrow-text">{copy.eyebrow}</p>
@@ -1564,6 +1780,66 @@ function App() {
             ))}
           </div>
         </section>
+
+        {/* ── Blind Date Night event section ────────────────────────── */}
+        {(() => {
+          const ec = EVENT_CONTENT[locale]
+          return (
+          <section className="panel-section event-panel" id="events" data-reveal>
+            <div className="section-header">
+              <p className="eyebrow-text">{ec.eyebrow}</p>
+              <h2>{ec.title}</h2>
+              <p>{ec.subtitle}</p>
+            </div>
+
+            <div className="event-card" data-reveal>
+              <div className="event-card-glow" aria-hidden="true" />
+              <div className="event-card-inner">
+                <div className="event-steps">
+                  <div className="event-step">
+                    <span className="event-step-num">01</span>
+                    <span>{ec.step1}</span>
+                  </div>
+                  <div className="event-step-arrow" aria-hidden="true">→</div>
+                  <div className="event-step">
+                    <span className="event-step-num">02</span>
+                    <span>{ec.step2}</span>
+                  </div>
+                  <div className="event-step-arrow" aria-hidden="true">→</div>
+                  <div className="event-step">
+                    <span className="event-step-num">03</span>
+                    <span>{ec.step3}</span>
+                  </div>
+                </div>
+
+                <div className="event-meta">
+                  <span className="event-meta-item">📅 {ec.date}</span>
+                  <span className="event-meta-item">🕖 {ec.time}</span>
+                  <span className="event-meta-item">📍 {ec.location}</span>
+                </div>
+
+                <button
+                  type="button"
+                  className="button primary event-register-btn"
+                  onClick={() => { setShowEventModal(true); setEventSubmitted(false) }}
+                >
+                  {ec.registerBtn}
+                </button>
+              </div>
+            </div>
+
+            {/* Google AdSense placeholder – replace innerHTML with real ad tag once account is activated */}
+            <div className="ad-slot" aria-label="Advertisement" role="complementary">
+              <span className="ad-slot-label">Ad</span>
+              {/* <ins className="adsbygoogle" style={{ display: 'block' }}
+                data-ad-client="ca-pub-XXXXXXXXXXXXXXXX"
+                data-ad-slot="XXXXXXXXXX"
+                data-ad-format="auto" data-full-width-responsive="true" /> */}
+            </div>
+          </section>
+          )
+        })()}
+
           </>
         ) : null}
 
@@ -1739,6 +2015,123 @@ function App() {
                   )
                 })}
               </div>
+            </article>
+
+            {/* ── Announcement banner admin ─────────────────────────────── */}
+            <article className="admin-card" data-reveal>
+              <div className="admin-card-head">
+                <h3>Announcement banner</h3>
+                <span>Show a dismissible banner at the top of the public website (e.g. event notice, special hours).</span>
+              </div>
+
+              <label className="admin-field">
+                <span>Announcement text</span>
+                <input
+                  type="text"
+                  maxLength={300}
+                  value={siteData.announcement?.text ?? ''}
+                  onChange={(e) => handleAnnouncementChange('text', e.target.value)}
+                  placeholder="e.g. Blind Date Night this Saturday – seats filling up!"
+                />
+              </label>
+
+              <label className="admin-toggle-field">
+                <input
+                  type="checkbox"
+                  checked={siteData.announcement?.enabled ?? false}
+                  onChange={(e) => handleAnnouncementChange('enabled', e.target.checked)}
+                />
+                <span>Show banner on website</span>
+              </label>
+            </article>
+
+            {/* ── Blind Date Night event registrations admin ────────────── */}
+            <article className="admin-card admin-card-full" data-reveal>
+              <div className="admin-card-head">
+                <h3>Blind Date Night – Registrations</h3>
+                <span>View all event registrations and top compatible pairs.</span>
+              </div>
+
+              <button
+                type="button"
+                className="button secondary"
+                onClick={() => void loadEventRegistrations()}
+                disabled={isLoadingRegistrations}
+              >
+                {isLoadingRegistrations ? 'Loading...' : 'Load registrations'}
+              </button>
+
+              {eventRegistrations.length > 0 ? (
+                <>
+                  <p className="admin-section-note">{eventRegistrations.length} registration{eventRegistrations.length !== 1 ? 's' : ''} found</p>
+
+                  {/* Top compatible pairs */}
+                  {(() => {
+                    const pairs: { a: EventRegistration; b: EventRegistration; score: number }[] = []
+                    for (let i = 0; i < eventRegistrations.length; i++) {
+                      for (let j = i + 1; j < eventRegistrations.length; j++) {
+                        pairs.push({
+                          a: eventRegistrations[i],
+                          b: eventRegistrations[j],
+                          score: getCompatibilityScore(eventRegistrations[i], eventRegistrations[j]),
+                        })
+                      }
+                    }
+                    pairs.sort((x, y) => y.score - x.score)
+                    const topPairs = pairs.slice(0, 5)
+                    if (topPairs.length === 0) return null
+                    return (
+                      <div className="event-pairs-panel">
+                        <h4>Top Compatible Pairs</h4>
+                        <div className="event-pairs-list">
+                          {topPairs.map((pair, idx) => (
+                            <div key={idx} className="event-pair-card">
+                              <div className="event-pair-names">{pair.a.name} &amp; {pair.b.name}</div>
+                              <div className="event-pair-score">
+                                <span className="event-pair-bar" style={{ width: `${pair.score}%` }} />
+                                <span className="event-pair-label">{getCompatibilityLabel(pair.score)}</span>
+                                <strong>{pair.score}%</strong>
+                              </div>
+                            </div>
+                          ))}
+                        </div>
+                      </div>
+                    )
+                  })()}
+
+                  {/* All registrations table */}
+                  <div className="event-reg-table-wrap">
+                    <table className="event-reg-table">
+                      <thead>
+                        <tr>
+                          <th>#</th>
+                          <th>Name</th>
+                          <th>Age</th>
+                          <th>Gender</th>
+                          <th>Personality</th>
+                          <th>Interests</th>
+                          <th>Rating</th>
+                          <th>Registered</th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        {eventRegistrations.map((reg, idx) => (
+                          <tr key={reg.id}>
+                            <td>{idx + 1}</td>
+                            <td>{reg.name}</td>
+                            <td>{reg.age}</td>
+                            <td>{reg.gender}</td>
+                            <td>{reg.personality}</td>
+                            <td className="event-reg-interests">{reg.interests}</td>
+                            <td>{'★'.repeat(reg.rating)}</td>
+                            <td>{new Date(reg.registeredAt).toLocaleDateString()}</td>
+                          </tr>
+                        ))}
+                      </tbody>
+                    </table>
+                  </div>
+                </>
+              ) : null}
             </article>
 
             <article className="admin-card" data-reveal>
@@ -2506,6 +2899,7 @@ function App() {
             ))}
           </div>
           <small>{copy.footerNote}</small>
+          <small className="footer-credit">Website created by <strong>Eng. Mikhael Rezk</strong></small>
         </div>
 
         <div className="footer-side">
@@ -2595,6 +2989,150 @@ function App() {
           </button>
         </div>
       ) : null}
+
+      {/* ── Blind Date Night registration modal ─────────────────────── */}
+      {showEventModal ? (() => {
+        const ec = EVENT_CONTENT[locale]
+        return (
+        <div
+          className="event-modal-overlay"
+          role="dialog"
+          aria-modal="true"
+          aria-label={ec.modalTitle}
+          onClick={(e) => { if (e.target === e.currentTarget) setShowEventModal(false) }}
+        >
+          <div className="event-modal">
+            <button
+              type="button"
+              className="event-modal-close"
+              aria-label="Close"
+              onClick={() => setShowEventModal(false)}
+            >
+              ✕
+            </button>
+            <h3 className="event-modal-title">{ec.modalTitle}</h3>
+
+            {eventSubmitted ? (
+              <div className="event-success">
+                <div className="event-success-icon">🎉</div>
+                <strong>{ec.successTitle}</strong>
+                <p>{ec.successText}</p>
+                <button
+                  type="button"
+                  className="button secondary"
+                  onClick={() => setShowEventModal(false)}
+                >
+                  Close
+                </button>
+              </div>
+            ) : (
+              <form className="event-form" onSubmit={(e) => void handleEventSubmit(e)}>
+                <label className="event-field">
+                  <span>{ec.fieldName} *</span>
+                  <input
+                    type="text"
+                    required
+                    maxLength={100}
+                    value={eventForm.name}
+                    onChange={(e) => setEventForm((f) => ({ ...f, name: e.target.value }))}
+                  />
+                </label>
+
+                <div className="event-field-row">
+                  <label className="event-field">
+                    <span>{ec.fieldAge}</span>
+                    <input
+                      type="number"
+                      min="18"
+                      max="99"
+                      value={eventForm.age}
+                      onChange={(e) => setEventForm((f) => ({ ...f, age: e.target.value }))}
+                    />
+                  </label>
+                  <label className="event-field">
+                    <span>{ec.fieldGender}</span>
+                    <select
+                      value={eventForm.gender}
+                      onChange={(e) => setEventForm((f) => ({ ...f, gender: e.target.value }))}
+                    >
+                      {(Object.entries(ec.genders) as [string, string][]).map(([k, v]) => (
+                        <option key={k} value={k}>{v}</option>
+                      ))}
+                    </select>
+                  </label>
+                </div>
+
+                <label className="event-field">
+                  <span>{ec.fieldInterests}</span>
+                  <input
+                    type="text"
+                    maxLength={200}
+                    value={eventForm.interests}
+                    onChange={(e) => setEventForm((f) => ({ ...f, interests: e.target.value }))}
+                  />
+                </label>
+
+                <label className="event-field">
+                  <span>{ec.fieldPersonality}</span>
+                  <select
+                    value={eventForm.personality}
+                    onChange={(e) => setEventForm((f) => ({ ...f, personality: e.target.value }))}
+                  >
+                    {(Object.entries(ec.personalities) as [string, string][]).map(([k, v]) => (
+                      <option key={k} value={k}>{v}</option>
+                    ))}
+                  </select>
+                </label>
+
+                <label className="event-field">
+                  <span>{ec.fieldLookingFor}</span>
+                  <textarea
+                    rows={3}
+                    maxLength={200}
+                    value={eventForm.lookingFor}
+                    onChange={(e) => setEventForm((f) => ({ ...f, lookingFor: e.target.value }))}
+                  />
+                </label>
+
+                <div className="event-field">
+                  <span>{ec.fieldRating}</span>
+                  <div className="event-stars">
+                    {[1, 2, 3, 4, 5].map((n) => (
+                      <button
+                        key={n}
+                        type="button"
+                        className={`event-star${eventForm.rating >= n ? ' active' : ''}`}
+                        onClick={() => setEventForm((f) => ({ ...f, rating: n }))}
+                        aria-label={`${n} star${n !== 1 ? 's' : ''}`}
+                      >
+                        ★
+                      </button>
+                    ))}
+                  </div>
+                </div>
+
+                <label className="event-field event-terms">
+                  <input
+                    type="checkbox"
+                    checked={eventForm.terms}
+                    onChange={(e) => setEventForm((f) => ({ ...f, terms: e.target.checked }))}
+                  />
+                  <span>{ec.fieldTerms} *</span>
+                </label>
+
+                <button
+                  type="submit"
+                  className="button primary event-submit-btn"
+                  disabled={eventSubmitting || !eventForm.terms}
+                >
+                  {eventSubmitting ? ec.submitting : ec.submitBtn}
+                </button>
+              </form>
+            )}
+          </div>
+        </div>
+        )
+      })() : null}
     </div>
   )
 }

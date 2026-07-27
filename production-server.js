@@ -86,6 +86,10 @@ function normalizeSiteData(siteData) {
   return {
     ...siteData,
     hours: normalizeSiteHours(siteData.hours),
+    announcement: {
+      text: String(siteData.announcement && siteData.announcement.text || '').trim().slice(0, 300),
+      enabled: Boolean(siteData.announcement && siteData.announcement.enabled),
+    },
   };
 }
 
@@ -115,9 +119,10 @@ function saveSiteData(data) {
 
 // Helper: Verify admin credentials
 function verifyAdmin(req) {
-  const auth = req.headers.authorization || '';
-  const [user, key] = auth.split(':');
-  return user === ADMIN_USERNAME && key === ADMIN_KEY;
+  return (
+    req.headers['x-admin-username'] === ADMIN_USERNAME &&
+    req.headers['x-admin-key'] === ADMIN_KEY
+  );
 }
 
 // Backend API Server
@@ -184,6 +189,56 @@ const backendServer = http.createServer((req, res) => {
         res.writeHead(400);
         res.end(JSON.stringify({ error: 'Invalid request body' }));
       });
+    return;
+  }
+
+  // POST /api/register-event - Register for Blind Date Night
+  if (req.method === 'POST' && req.url === '/api/register-event') {
+    parseBody(req).then(body => {
+      const name = String(body.name || '').trim().slice(0, 100);
+      if (!name) {
+        res.writeHead(400);
+        res.end(JSON.stringify({ ok: false, error: 'name_required' }));
+        return;
+      }
+
+      const registration = {
+        id: `reg-${Date.now().toString(36)}-${Math.random().toString(36).slice(2, 7)}`,
+        name,
+        age: String(body.age || '').trim().slice(0, 10),
+        gender: String(body.gender || '').trim().slice(0, 20),
+        interests: String(body.interests || '').trim().slice(0, 200),
+        personality: String(body.personality || '').trim().slice(0, 40),
+        lookingFor: String(body.lookingFor || '').trim().slice(0, 200),
+        rating: Math.min(5, Math.max(1, parseInt(body.rating) || 3)),
+        registeredAt: new Date().toISOString(),
+      };
+
+      const data = loadSiteData();
+      if (!Array.isArray(data.eventRegistrations)) data.eventRegistrations = [];
+      data.eventRegistrations.push(registration);
+      fs.writeFileSync(DATA_FILE, JSON.stringify(data, null, 2));
+
+      res.writeHead(200);
+      res.end(JSON.stringify({ ok: true, id: registration.id }));
+    }).catch(() => {
+      res.writeHead(400);
+      res.end(JSON.stringify({ ok: false, error: 'invalid_body' }));
+    });
+    return;
+  }
+
+  // GET /api/admin/event-registrations - Get all event registrations
+  if (req.method === 'GET' && req.url === '/api/admin/event-registrations') {
+    if (!verifyAdmin(req)) {
+      res.writeHead(401);
+      res.end(JSON.stringify({ ok: false, error: 'Unauthorized' }));
+      return;
+    }
+
+    const data = loadSiteData();
+    res.writeHead(200);
+    res.end(JSON.stringify({ ok: true, registrations: data.eventRegistrations || [] }));
     return;
   }
 

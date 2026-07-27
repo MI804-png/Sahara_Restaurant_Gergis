@@ -321,6 +321,10 @@ function normalizeSiteData(payload) {
           .map((entry) => normalizeProductSale(entry))
           .filter(Boolean)
       : [],
+    announcement: {
+      text: normalizeOptionalText(siteData.announcement && siteData.announcement.text, 300),
+      enabled: normalizeBoolean(siteData.announcement && siteData.announcement.enabled, false),
+    },
   }
 }
 
@@ -386,6 +390,7 @@ function writeSavedRecord(payload) {
     updatedAt: new Date().toISOString(),
     siteData: normalizeSiteData(payload),
     metrics: current.metrics,
+    eventRegistrations: current.eventRegistrations,
   }
 
   writeStoredRecord(record)
@@ -405,6 +410,7 @@ function recordVisit() {
       totalVisits: current.metrics.totalVisits + 1,
       lastVisitedAt: new Date().toISOString(),
     },
+    eventRegistrations: current.eventRegistrations,
   }
 
   writeStoredRecord(record)
@@ -652,6 +658,54 @@ http
 
       const deleted = deleteUploadedImage(payload.src)
       sendJson(response, 200, { ok: true, deleted })
+      return
+    }
+
+    if (request.method === 'POST' && rawPath === '/api/register-event') {
+      const payload = await parseJsonBody(request, response)
+
+      if (!payload) {
+        return
+      }
+
+      const name = normalizeText(payload.name, 100)
+      if (!name) {
+        sendJson(response, 400, { ok: false, error: 'name_required' })
+        return
+      }
+
+      const registration = {
+        id: `reg-${Date.now().toString(36)}-${Math.random().toString(36).slice(2, 7)}`,
+        name,
+        age: normalizeText(payload.age, 10),
+        gender: normalizeText(payload.gender, 20),
+        interests: normalizeText(payload.interests, 200),
+        personality: normalizeText(payload.personality, 40),
+        lookingFor: normalizeText(payload.lookingFor, 200),
+        rating: Math.min(5, Math.max(1, normalizeInteger(payload.rating) || 3)),
+        registeredAt: new Date().toISOString(),
+      }
+
+      const current = readStoredRecord()
+      const record = {
+        updatedAt: current.updatedAt,
+        siteData: current.siteData,
+        metrics: current.metrics,
+        eventRegistrations: [...current.eventRegistrations, registration],
+      }
+
+      writeStoredRecord(record)
+      sendJson(response, 200, { ok: true, id: registration.id })
+      return
+    }
+
+    if (request.method === 'GET' && rawPath === '/api/admin/event-registrations') {
+      if (!requireAdmin(request, response)) {
+        return
+      }
+
+      const current = readStoredRecord()
+      sendJson(response, 200, { ok: true, registrations: current.eventRegistrations })
       return
     }
 
