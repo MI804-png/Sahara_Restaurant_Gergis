@@ -277,6 +277,10 @@ function normalizeSiteData(payload) {
         false,
       ),
     },
+    pricing: {
+      taxEnabled: normalizeBoolean(siteData.pricing && siteData.pricing.taxEnabled, false),
+      taxPercent: normalizePercent(siteData.pricing && siteData.pricing.taxPercent),
+    },
     menuSections: Array.isArray(siteData.menuSections)
       ? siteData.menuSections.map((section, index) => normalizeMenuSection(section, index))
       : [],

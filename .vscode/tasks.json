@@ -17,6 +17,18 @@
 				"5173"
 			],
 			"isBackground": true
+		},
+		{
+			"label": "Run Sahara site (dev plain)",
+			"type": "shell",
+			"command": "npm",
+			"args": [
+				"--prefix",
+				"site",
+				"run",
+				"dev"
+			],
+			"isBackground": true
 		}
 	]
 }

@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useState, type ChangeEvent } from 'react'
+import { useCallback, useEffect, useMemo, useState, type ChangeEvent } from 'react'
 import './App.css'
 import { content, localeOrder, type Locale } from './content'
 import {
@@ -31,9 +31,9 @@ const facebookProfileUrl = 'https://www.facebook.com/gorgoo.noshy'
 const tiktokProfileUrl = 'https://www.tiktok.com/search/user?q=gorgoo%20noshy'
 const whatsappContactUrl = 'https://wa.me/36309000866'
 const facebookVideoUrl = 'https://www.facebook.com/share/v/1BR5FjpWim/'
-const mapsSearchUrl =
+const restaurantName = 'Sahara Restaurant'
+const defaultMapsSearchUrl =
   'https://www.google.com/maps?q=47.48818588256836,19.097597122192383&z=17&hl=en'
-const qrCodeUrl = '/location-qr.svg'
 const visitSessionKey = 'sahara-visit-tracked-v1'
 const apiPaths = {
   siteData: '/api/site-data',
@@ -234,6 +234,29 @@ function getRevealDelay(index: number) {
   return `${Math.min(index * 24, 144)}ms`
 }
 
+function buildMapsSearchUrl(locationLabel: string) {
+  const value = locationLabel.trim()
+
+  if (!value) {
+    return defaultMapsSearchUrl
+  }
+
+  return `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(`${restaurantName} ${value}`)}`
+}
+
+function buildQrCodeUrl(targetUrl: string) {
+  return `https://api.qrserver.com/v1/create-qr-code/?size=600x600&data=${encodeURIComponent(targetUrl)}`
+}
+
+function escapeHtml(value: string) {
+  return value
+    .replaceAll('&', '&amp;')
+    .replaceAll('<', '&lt;')
+    .replaceAll('>', '&gt;')
+    .replaceAll('"', '&quot;')
+    .replaceAll("'", '&#39;')
+}
+
 function App() {
   const [locale, setLocale] = useState<Locale>('hu')
   const [installPrompt, setInstallPrompt] = useState<BeforeInstallPromptEvent | null>(null)
@@ -246,6 +269,8 @@ function App() {
   const [loadError, setLoadError] = useState<string | null>(null)
   const [adminUsername, setAdminUsername] = useState('')
   const [adminKey, setAdminKey] = useState('')
+  const [isAdminPasswordVisible, setIsAdminPasswordVisible] = useState(false)
+  const [isLoginPasswordVisible, setIsLoginPasswordVisible] = useState(false)
   const [isAdminVerified, setIsAdminVerified] = useState(false)
   const [isVerifyingAdmin, setIsVerifyingAdmin] = useState(false)
   const [adminAccessError, setAdminAccessError] = useState<string | null>(null)
@@ -253,6 +278,8 @@ function App() {
   const [isUploadingTarget, setIsUploadingTarget] = useState<'menu' | 'gallery' | null>(null)
   const [saveMessage, setSaveMessage] = useState<string | null>(null)
   const [saveError, setSaveError] = useState<string | null>(null)
+  const [restorableSiteData, setRestorableSiteData] = useState<SiteData | null>(null)
+  const [selectedEditorItemId, setSelectedEditorItemId] = useState('')
   const [now, setNow] = useState(() => new Date())
   const normalizedPath = window.location.pathname.replace(/\/+$/, '') || '/'
   const isAdminRoute = normalizedPath === '/admin'
@@ -268,6 +295,19 @@ function App() {
   const isDirty = JSON.stringify(siteData) !== JSON.stringify(savedSiteData)
   const savedAtLabel = updatedAt ? formatSavedAt(locale, updatedAt) : null
   const productOptions = getMenuProductOptions(siteData)
+  const normalizedSelectedItemId = useMemo(() => {
+    if (selectedEditorItemId && productOptions.some((p) => p.itemId === selectedEditorItemId)) {
+      return selectedEditorItemId
+    }
+    return productOptions[0]?.itemId ?? ''
+  }, [productOptions, selectedEditorItemId])
+  const selectedEditorProduct = productOptions.find(
+    (product) => product.itemId === normalizedSelectedItemId,
+  )
+  const taxEnabled = siteData.pricing.taxEnabled
+  const taxPercent = siteData.pricing.taxPercent
+  const activeMapUrl = buildMapsSearchUrl(siteData.business.locationLabel)
+  const qrCodeUrl = buildQrCodeUrl(activeMapUrl)
   const productMap = new Map(productOptions.map((product) => [product.itemId, product] as const))
   const offerCards = siteData.offers
     .map((offer) => {
@@ -319,13 +359,6 @@ function App() {
     document.documentElement.dir = copy.dir
     document.title = isAdminRoute ? 'Sahara Restaurant Admin' : copy.browserTitle
   }, [copy.browserTitle, copy.dir, isAdminRoute, locale])
-
-  useEffect(() => {
-    if (!isAdminRoute && isAdminVerified) {
-      setIsAdminVerified(false)
-      setAdminAccessError(null)
-    }
-  }, [isAdminRoute, isAdminVerified])
 
   useEffect(() => {
     const handlePageShow = () => {
@@ -519,6 +552,66 @@ function App() {
     setSaveMessage('Draft reset to the last saved version.')
   }
 
+  const handleRestoreDefaults = () => {
+    setRestorableSiteData(cloneSiteData(siteData))
+    setSiteData(cloneSiteData(defaultSiteData))
+    setSaveError(null)
+    setSaveMessage('Default template restored. Save permanently to keep it.')
+  }
+
+  const handleRestoreLastDelete = () => {
+    if (!restorableSiteData) {
+      return
+    }
+
+    setSiteData(cloneSiteData(restorableSiteData))
+    setRestorableSiteData(null)
+    setSaveError(null)
+    setSaveMessage('Last deleted content has been restored. Save permanently to keep it.')
+  }
+
+  const handlePrintLocationQr = () => {
+    const printWindow = window.open('', '_blank', 'noopener,noreferrer,width=620,height=760')
+
+    if (!printWindow) {
+      return
+    }
+
+    const locationLabel = escapeHtml(siteData.business.locationLabel || 'Sahara Restaurant')
+    const mapUrl = escapeHtml(activeMapUrl)
+    const imageUrl = escapeHtml(qrCodeUrl)
+
+    printWindow.document.write(`<!doctype html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <title>Sahara Restaurant Location QR</title>
+    <style>
+      body { font-family: Arial, sans-serif; margin: 0; padding: 24px; color: #1f140d; }
+      main { max-width: 520px; margin: 0 auto; display: grid; gap: 14px; text-align: center; }
+      img { width: 100%; max-width: 340px; margin: 0 auto; display: block; border: 1px solid #d7c3ac; border-radius: 18px; }
+      h1 { margin: 0; font-size: 1.6rem; }
+      p { margin: 0; color: #4b3323; }
+      a { color: #7b3d1b; word-break: break-word; }
+    </style>
+  </head>
+  <body>
+    <main>
+      <h1>Sahara Restaurant</h1>
+      <p>${locationLabel}</p>
+      <img src="${imageUrl}" alt="Restaurant location QR code" />
+      <a href="${mapUrl}">${mapUrl}</a>
+    </main>
+    <script>
+      window.addEventListener('load', function () {
+        window.print();
+      });
+    </script>
+  </body>
+</html>`)
+    printWindow.document.close()
+  }
+
   const handleHoursChange = (field: 'open' | 'close', value: string) => {
     updateSiteData((current) => ({
       ...current,
@@ -538,6 +631,19 @@ function App() {
       business: {
         ...current.business,
         [field]: value,
+      },
+    }))
+  }
+
+  const handlePricingChange = (field: 'taxEnabled' | 'taxPercent', value: string | boolean) => {
+    updateSiteData((current) => ({
+      ...current,
+      pricing: {
+        ...current.pricing,
+        [field]:
+          field === 'taxPercent'
+            ? Math.min(100, Math.max(0, Number(value) || 0))
+            : Boolean(value),
       },
     }))
   }
@@ -568,6 +674,13 @@ function App() {
   }
 
   const handleDeleteSection = (sectionId: string) => {
+    const section = siteData.menuSections.find((entry) => entry.id === sectionId)
+
+    if (!section) {
+      return
+    }
+
+    setRestorableSiteData(cloneSiteData(siteData))
     updateSiteData((current) => {
       const deletedSection = current.menuSections.find((section) => section.id === sectionId)
       const deletedItemIds = deletedSection ? deletedSection.items.map((item) => item.id) : []
@@ -581,6 +694,7 @@ function App() {
         ),
       }
     })
+    setSaveMessage('Section deleted. Use "Restore last delete" if this was not intended.')
   }
 
   const handleAddItem = (sectionId: string) => {
@@ -626,6 +740,14 @@ function App() {
   }
 
   const handleDeleteItem = (sectionId: string, itemId: string) => {
+    const section = siteData.menuSections.find((entry) => entry.id === sectionId)
+    const item = section?.items.find((entry) => entry.id === itemId)
+
+    if (!item) {
+      return
+    }
+
+    setRestorableSiteData(cloneSiteData(siteData))
     updateSiteData((current) => ({
       ...current,
       menuSections: current.menuSections.map((section) =>
@@ -639,6 +761,7 @@ function App() {
       offers: current.offers.filter((offer) => offer.itemId !== itemId),
       productSales: current.productSales.filter((entry) => entry.itemId !== itemId),
     }))
+    setSaveMessage('Product deleted. Use "Restore last delete" if needed.')
   }
 
   const handleMenuImageChange = (
@@ -681,10 +804,18 @@ function App() {
   }
 
   const handleDeleteMenuImage = (imageId: string) => {
+    const image = siteData.menuEvidenceImages.find((entry) => entry.id === imageId)
+
+    if (!image) {
+      return
+    }
+
+    setRestorableSiteData(cloneSiteData(siteData))
     updateSiteData((current) => ({
       ...current,
       menuEvidenceImages: current.menuEvidenceImages.filter((image) => image.id !== imageId),
     }))
+    setSaveMessage('Image deleted. Use "Restore last delete" to bring it back.')
   }
 
   const handleAddGalleryImage = () => {
@@ -695,10 +826,12 @@ function App() {
   }
 
   const handleDeleteGalleryImage = (imageId: string) => {
+    setRestorableSiteData(cloneSiteData(siteData))
     updateSiteData((current) => ({
       ...current,
       galleryImages: current.galleryImages.filter((image) => image.id !== imageId),
     }))
+    setSaveMessage('Gallery image deleted. Use "Restore last delete" if required.')
   }
 
   const handleAddOffer = () => {
@@ -716,10 +849,18 @@ function App() {
   }
 
   const handleDeleteOffer = (offerId: string) => {
+    const offer = siteData.offers.find((entry) => entry.id === offerId)
+
+    if (!offer) {
+      return
+    }
+
+    setRestorableSiteData(cloneSiteData(siteData))
     updateSiteData((current) => ({
       ...current,
       offers: current.offers.filter((offer) => offer.id !== offerId),
     }))
+    setSaveMessage('Offer deleted. Use "Restore last delete" if needed.')
   }
 
   const handleSalesQuantityChange = (itemId: string, value: string) => {
@@ -1018,7 +1159,20 @@ function App() {
                   style={{ transitionDelay: getRevealDelay(index) }}
                 >
                   <span>{item.label}</span>
-                  <strong>{item.value}</strong>
+                  <strong>
+                    {index === 0 ? (
+                      <a
+                        className="location-map-link"
+                        href={activeMapUrl}
+                        target="_blank"
+                        rel="noreferrer"
+                      >
+                        {item.value}
+                      </a>
+                    ) : (
+                      item.value
+                    )}
+                  </strong>
                 </article>
               ))}
             </div>
@@ -1139,7 +1293,7 @@ function App() {
                 </a>
                 <a
                   className="button secondary"
-                  href={mapsSearchUrl}
+                  href={activeMapUrl}
                   target="_blank"
                   rel="noreferrer"
                 >
@@ -1184,6 +1338,11 @@ function App() {
                       <span className="offer-price-old">{hufFormatter.format(card.priceHuf)} HUF</span>
                       <strong>{hufFormatter.format(card.discountedPriceHuf)} HUF</strong>
                       <small>-{card.offer.discountPercent}%</small>
+                      {taxEnabled ? (
+                        <small>
+                          Incl. tax: {hufFormatter.format(Math.round(card.discountedPriceHuf * (1 + taxPercent / 100)))} HUF
+                        </small>
+                      ) : null}
                     </div>
 
                     <div className="offer-meta-grid">
@@ -1381,13 +1540,27 @@ function App() {
 
             <label className="admin-field admin-key-field">
               <span>Admin password</span>
-              <input
-                type="password"
-                value={adminKey}
-                onChange={(event) => handleAdminKeyChange(event.target.value)}
-                placeholder="Required for uploads and save"
-                autoComplete="current-password"
-              />
+              <div className="admin-password-input">
+                <input
+                  type={isAdminPasswordVisible ? 'text' : 'password'}
+                  value={adminKey}
+                  onChange={(event) => handleAdminKeyChange(event.target.value)}
+                  placeholder="Required for uploads and save"
+                  autoComplete="current-password"
+                />
+                <button
+                  type="button"
+                  className="admin-password-toggle"
+                  onClick={() => setIsAdminPasswordVisible((current) => !current)}
+                  aria-label={isAdminPasswordVisible ? 'Hide password' : 'Show password'}
+                >
+                  {isAdminPasswordVisible ? (
+                    <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true"><path d="M17.94 17.94A10.07 10.07 0 0 1 12 20c-7 0-11-8-11-8a18.45 18.45 0 0 1 5.06-5.94"/><path d="M9.9 4.24A9.12 9.12 0 0 1 12 4c7 0 11 8 11 8a18.5 18.5 0 0 1-2.16 3.19"/><path d="M14.12 14.12a3 3 0 1 1-4.24-4.24"/><line x1="1" y1="1" x2="23" y2="23"/></svg>
+                  ) : (
+                    <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>
+                  )}
+                </button>
+              </div>
             </label>
 
             <div className="admin-status-card">
@@ -1407,6 +1580,22 @@ function App() {
             </div>
 
             <div className="admin-toolbar-actions">
+              <button
+                type="button"
+                className="button secondary"
+                onClick={handleRestoreLastDelete}
+                disabled={isSaving || isLoadingSiteData || !restorableSiteData}
+              >
+                Restore last delete
+              </button>
+              <button
+                type="button"
+                className="button secondary"
+                onClick={handleRestoreDefaults}
+                disabled={isSaving || isLoadingSiteData}
+              >
+                Restore bundled defaults
+              </button>
               <button
                 type="button"
                 className="button secondary"
@@ -1445,7 +1634,12 @@ function App() {
             <article className="admin-summary-card" data-reveal>
               <span>Offer-adjusted revenue</span>
               <strong>{hufFormatter.format(salesSummary.discountedRevenueHuf)} HUF</strong>
-              <small>Gross: {hufFormatter.format(salesSummary.grossRevenueHuf)} HUF</small>
+              <small>
+                Gross: {hufFormatter.format(salesSummary.grossRevenueHuf)} HUF
+                {taxEnabled
+                  ? ` | With tax: ${hufFormatter.format(salesSummary.discountedRevenueWithTaxHuf)} HUF`
+                  : ''}
+              </small>
             </article>
           </div>
 
@@ -1519,12 +1713,80 @@ function App() {
                   <option value="available">Available</option>
                 </select>
               </label>
+
+              <div className="admin-quick-actions">
+                <a className="button secondary" href={activeMapUrl} target="_blank" rel="noreferrer">
+                  Show location on map
+                </a>
+                <button type="button" className="button secondary" onClick={handlePrintLocationQr}>
+                  Print QR code
+                </button>
+              </div>
+            </article>
+
+            <article className="admin-card" data-reveal>
+              <div className="admin-card-head">
+                <h3>Pricing and tax</h3>
+                <span>Add optional tax percentage to revenue totals and offer calculations.</span>
+              </div>
+
+              <div className="admin-field-row compact-row">
+                <label className="admin-field">
+                  <span>Tax percent</span>
+                  <input
+                    type="number"
+                    min="0"
+                    max="100"
+                    step="0.1"
+                    value={siteData.pricing.taxPercent}
+                    onChange={(event) => handlePricingChange('taxPercent', event.target.value)}
+                  />
+                </label>
+                <label className="admin-toggle-field">
+                  <input
+                    type="checkbox"
+                    checked={siteData.pricing.taxEnabled}
+                    onChange={(event) => handlePricingChange('taxEnabled', event.target.checked)}
+                  />
+                  <span>Tax enabled in totals</span>
+                </label>
+              </div>
+
+              <p className="admin-tax-note">
+                {taxEnabled ? `Tax active: ${taxPercent}%` : 'Tax is currently disabled.'}
+              </p>
             </article>
 
             <article className="admin-card admin-card-full" data-reveal>
               <div className="admin-card-head">
                 <h3>Products and prices</h3>
                 <span>Add, edit, and delete section names, products, prices, and descriptions.</span>
+              </div>
+
+              <div className="admin-field-row compact-row">
+                <label className="admin-field">
+                  <span>Select product before edit/delete</span>
+                  <select
+                    value={normalizedSelectedItemId}
+                    onChange={(event) => setSelectedEditorItemId(event.target.value)}
+                  >
+                    {productOptions.map((product) => (
+                      <option key={product.itemId} value={product.itemId}>
+                        {product.sectionTitle} - {product.itemName}
+                      </option>
+                    ))}
+                  </select>
+                </label>
+                <div className="admin-selection-note">
+                  <strong>
+                    {selectedEditorProduct
+                      ? `Editing: ${selectedEditorProduct.sectionTitle} - ${selectedEditorProduct.itemName}`
+                      : 'No product selected'}
+                  </strong>
+                  <span>
+                    Pick any pizza or menu item first, then edit or delete with full control.
+                  </span>
+                </div>
               </div>
 
               <div className="admin-section-list">
@@ -1566,13 +1828,21 @@ function App() {
 
                     <div className="admin-item-editor-list">
                       {section.items.map((item) => (
-                        <div key={item.id} className="admin-item-editor">
+                        <div
+                          key={item.id}
+                          className={`admin-item-editor${normalizedSelectedItemId === item.id ? ' is-focused' : ''}`}
+                        >
+                          <div className="admin-item-editor-header">
+                            <span>{item.name || 'New product'}</span>
+                            <small>{hufFormatter.format(item.priceHuf)} HUF</small>
+                          </div>
                           <div className="admin-field-row compact-row admin-item-top-row">
                             <label className="admin-field admin-field-grow">
                               <span>Product name</span>
                               <input
                                 type="text"
                                 value={item.name}
+                                onFocus={() => setSelectedEditorItemId(item.id)}
                                 onChange={(event) =>
                                   handleItemChange(section.id, item.id, 'name', event.target.value)
                                 }
@@ -1585,6 +1855,7 @@ function App() {
                                 min="0"
                                 step="1"
                                 value={item.priceHuf}
+                                onFocus={() => setSelectedEditorItemId(item.id)}
                                 onChange={(event) =>
                                   handleItemChange(
                                     section.id,
@@ -1595,13 +1866,6 @@ function App() {
                                 }
                               />
                             </label>
-                            <button
-                              type="button"
-                              className="button secondary admin-small-button"
-                              onClick={() => handleDeleteItem(section.id, item.id)}
-                            >
-                              Delete product
-                            </button>
                           </div>
 
                           <label className="admin-field">
@@ -1609,6 +1873,7 @@ function App() {
                             <textarea
                               rows={2}
                               value={item.details}
+                              onFocus={() => setSelectedEditorItemId(item.id)}
                               onChange={(event) =>
                                 handleItemChange(
                                   section.id,
@@ -1619,6 +1884,14 @@ function App() {
                               }
                             />
                           </label>
+
+                          <button
+                            type="button"
+                            className="button secondary admin-small-button admin-delete-under-description"
+                            onClick={() => handleDeleteItem(section.id, item.id)}
+                          >
+                            Delete product
+                          </button>
                         </div>
                       ))}
                     </div>
@@ -1864,11 +2137,23 @@ function App() {
                 </article>
                 <article className="sales-summary-card">
                   <span>Gross revenue</span>
-                  <strong>{hufFormatter.format(salesSummary.grossRevenueHuf)} HUF</strong>
+                  <strong>
+                    {hufFormatter.format(
+                      taxEnabled ? salesSummary.grossRevenueWithTaxHuf : salesSummary.grossRevenueHuf,
+                    )}{' '}
+                    HUF
+                  </strong>
                 </article>
                 <article className="sales-summary-card">
                   <span>Offer-adjusted revenue</span>
-                  <strong>{hufFormatter.format(salesSummary.discountedRevenueHuf)} HUF</strong>
+                  <strong>
+                    {hufFormatter.format(
+                      taxEnabled
+                        ? salesSummary.discountedRevenueWithTaxHuf
+                        : salesSummary.discountedRevenueHuf,
+                    )}{' '}
+                    HUF
+                  </strong>
                 </article>
               </div>
 
@@ -2057,13 +2342,27 @@ function App() {
 
             <label className="admin-field admin-key-field">
               <span>Admin password</span>
-              <input
-                type="password"
-                value={adminKey}
-                onChange={(event) => handleAdminKeyChange(event.target.value)}
-                placeholder="Enter admin password"
-                autoComplete="current-password"
-              />
+              <div className="admin-password-input">
+                <input
+                  type={isLoginPasswordVisible ? 'text' : 'password'}
+                  value={adminKey}
+                  onChange={(event) => handleAdminKeyChange(event.target.value)}
+                  placeholder="Enter admin password"
+                  autoComplete="current-password"
+                />
+                <button
+                  type="button"
+                  className="admin-password-toggle"
+                  onClick={() => setIsLoginPasswordVisible((current) => !current)}
+                  aria-label={isLoginPasswordVisible ? 'Hide password' : 'Show password'}
+                >
+                  {isLoginPasswordVisible ? (
+                    <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true"><path d="M17.94 17.94A10.07 10.07 0 0 1 12 20c-7 0-11-8-11-8a18.45 18.45 0 0 1 5.06-5.94"/><path d="M9.9 4.24A9.12 9.12 0 0 1 12 4c7 0 11 8 11 8a18.5 18.5 0 0 1-2.16 3.19"/><path d="M14.12 14.12a3 3 0 1 1-4.24-4.24"/><line x1="1" y1="1" x2="23" y2="23"/></svg>
+                  ) : (
+                    <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>
+                  )}
+                </button>
+              </div>
             </label>
 
             <div className="admin-toolbar-actions">
@@ -2118,7 +2417,20 @@ function App() {
                 style={{ transitionDelay: getRevealDelay(index) }}
               >
                 <span>{item.label}</span>
-                <strong>{item.value}</strong>
+                <strong>
+                  {index === 0 ? (
+                    <a
+                      className="location-map-link"
+                      href={activeMapUrl}
+                      target="_blank"
+                      rel="noreferrer"
+                    >
+                      {item.value}
+                    </a>
+                  ) : (
+                    item.value
+                  )}
+                </strong>
               </article>
             ))}
           </div>
@@ -2153,12 +2465,15 @@ function App() {
             </a>
             <a
               className="button secondary"
-              href={mapsSearchUrl}
+              href={activeMapUrl}
               target="_blank"
               rel="noreferrer"
             >
               {copy.ctaMaps}
             </a>
+            <button type="button" className="button secondary" onClick={handlePrintLocationQr}>
+              Print location QR
+            </button>
             <a className="button secondary" href="/admin">
               Admin page
             </a>
@@ -2171,7 +2486,7 @@ function App() {
 
           <a
             className="qr-card"
-            href={mapsSearchUrl}
+            href={activeMapUrl}
             target="_blank"
             rel="noreferrer"
             aria-label={copy.qrTitle}

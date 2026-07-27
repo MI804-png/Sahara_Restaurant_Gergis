@@ -56,6 +56,11 @@ export type ProductSales = {
   quantitySold: number
 }
 
+export type PricingSettings = {
+  taxEnabled: boolean
+  taxPercent: number
+}
+
 export type SiteMetrics = {
   totalVisits: number
   lastVisitedAt: string | null
@@ -64,6 +69,7 @@ export type SiteMetrics = {
 export type SiteData = {
   hours: SiteHours
   business: SiteBusinessDetails
+  pricing: PricingSettings
   menuSections: EditableMenuSection[]
   menuEvidenceImages: EditableMenuEvidenceImage[]
   galleryImages: EditableGalleryImage[]
@@ -93,7 +99,9 @@ export type OfferStatus = 'live' | 'scheduled' | 'expired' | 'sold-out' | 'disab
 export type SalesSummary = {
   totalProductsSold: number
   grossRevenueHuf: number
+  grossRevenueWithTaxHuf: number
   discountedRevenueHuf: number
+  discountedRevenueWithTaxHuf: number
 }
 
 export const defaultSiteMetrics: SiteMetrics = {
@@ -170,6 +178,10 @@ export const defaultSiteData: SiteData = {
     phoneNumber: '',
     deliveryAvailable: false,
   },
+  pricing: {
+    taxEnabled: false,
+    taxPercent: 0,
+  },
   menuSections: buildDefaultMenuSections(),
   menuEvidenceImages: buildDefaultMenuEvidenceImages(),
   galleryImages: buildDefaultGalleryImages(),
@@ -187,6 +199,10 @@ export function cloneSiteData(siteData: SiteData): SiteData {
       locationLabel: siteData.business.locationLabel,
       phoneNumber: siteData.business.phoneNumber,
       deliveryAvailable: siteData.business.deliveryAvailable,
+    },
+    pricing: {
+      taxEnabled: siteData.pricing?.taxEnabled ?? false,
+      taxPercent: Math.max(0, Math.min(100, Math.round(siteData.pricing?.taxPercent ?? 0))),
     },
     menuSections: siteData.menuSections.map((section) => ({
       id: section.id,
@@ -520,6 +536,10 @@ export function getSalesQuantity(siteData: SiteData, itemId: string) {
 export function getSalesSummary(siteData: SiteData, now: Date): SalesSummary {
   const products = getMenuProductOptions(siteData)
   const productMap = new Map(products.map((product) => [product.itemId, product]))
+  const taxPercent = siteData.pricing?.taxEnabled
+    ? Math.max(0, Math.min(100, siteData.pricing.taxPercent))
+    : 0
+  const taxMultiplier = 1 + taxPercent / 100
 
   return siteData.productSales.reduce<SalesSummary>(
     (summary, entry) => {
@@ -538,13 +558,20 @@ export function getSalesSummary(siteData: SiteData, now: Date): SalesSummary {
       return {
         totalProductsSold: summary.totalProductsSold + quantitySold,
         grossRevenueHuf: summary.grossRevenueHuf + product.priceHuf * quantitySold,
+        grossRevenueWithTaxHuf:
+          summary.grossRevenueWithTaxHuf + Math.round(product.priceHuf * quantitySold * taxMultiplier),
         discountedRevenueHuf: summary.discountedRevenueHuf + effectivePrice * quantitySold,
+        discountedRevenueWithTaxHuf:
+          summary.discountedRevenueWithTaxHuf +
+          Math.round(effectivePrice * quantitySold * taxMultiplier),
       }
     },
     {
       totalProductsSold: 0,
       grossRevenueHuf: 0,
+      grossRevenueWithTaxHuf: 0,
       discountedRevenueHuf: 0,
+      discountedRevenueWithTaxHuf: 0,
     },
   )
 }
