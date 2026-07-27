@@ -241,6 +241,12 @@ function buildMapsSearchUrl(locationLabel: string) {
     return defaultMapsSearchUrl
   }
 
+  // When value looks like coordinates (lat, lon), use the direct pin URL
+  const coordMatch = value.match(/^(-?\d+(?:\.\d+)?)\s*,\s*(-?\d+(?:\.\d+)?)$/)
+  if (coordMatch) {
+    return `https://maps.google.com/?q=${coordMatch[1]},${coordMatch[2]}&z=17`
+  }
+
   return `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(`${restaurantName} ${value}`)}`
 }
 
@@ -1255,7 +1261,20 @@ function App() {
                 style={{ transitionDelay: getRevealDelay(index) }}
               >
                 <span>{item.label}</span>
-                <strong>{item.value}</strong>
+                <strong>
+                  {index === 0 ? (
+                    <a
+                      className="location-map-link"
+                      href={activeMapUrl}
+                      target="_blank"
+                      rel="noreferrer"
+                    >
+                      {item.value}
+                    </a>
+                  ) : (
+                    item.value
+                  )}
+                </strong>
               </article>
             ))}
           </div>
