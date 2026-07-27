@@ -97,6 +97,7 @@ export type SiteData = {
   business: SiteBusinessDetails
   pricing: PricingSettings
   announcement: Announcement
+  eventEnabled: boolean
   menuSections: EditableMenuSection[]
   menuEvidenceImages: EditableMenuEvidenceImage[]
   galleryImages: EditableGalleryImage[]
@@ -220,6 +221,7 @@ export const defaultSiteData: SiteData = {
   menuEvidenceImages: buildDefaultMenuEvidenceImages(),
   galleryImages: buildDefaultGalleryImages(),
   announcement: { text: '', enabled: false },
+  eventEnabled: true,
   offers: [],
   productSales: [],
 }
@@ -283,6 +285,7 @@ export function cloneSiteData(siteData: SiteData): SiteData {
       text: siteData.announcement?.text ?? '',
       enabled: siteData.announcement?.enabled ?? false,
     },
+    eventEnabled: siteData.eventEnabled ?? true,
     productSales: siteData.productSales.map((entry) => ({
       itemId: entry.itemId,
       quantitySold: entry.quantitySold,

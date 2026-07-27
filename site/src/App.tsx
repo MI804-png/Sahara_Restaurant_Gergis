@@ -749,7 +749,7 @@ function App() {
     setSaveMessage('Last deleted content has been restored. Save permanently to keep it.')
   }
 
-  const handlePrintLocationQr = () => {
+  const handlePrintLocationQr = async () => {
     const printWindow = window.open('', '_blank', 'noopener,noreferrer,width=620,height=760')
 
     if (!printWindow) {
@@ -758,7 +758,23 @@ function App() {
 
     const locationLabel = escapeHtml(siteData.business.locationLabel || 'Sahara Restaurant')
     const mapUrl = escapeHtml(activeMapUrl)
-    const imageUrl = escapeHtml(qrCodeUrl)
+
+    // Pre-fetch QR image as a data URL so it prints without a blank page
+    let embeddedQr = qrCodeUrl
+    try {
+      const resp = await fetch(qrCodeUrl)
+      const blob = await resp.blob()
+      embeddedQr = await new Promise<string>((resolve, reject) => {
+        const reader = new FileReader()
+        reader.onload = () => resolve(reader.result as string)
+        reader.onerror = reject
+        reader.readAsDataURL(blob)
+      })
+    } catch {
+      // fall back to original URL
+    }
+
+    const imageUrl = escapeHtml(embeddedQr)
 
     printWindow.document.write(`<!doctype html>
 <html>
@@ -781,11 +797,7 @@ function App() {
       <img src="${imageUrl}" alt="Restaurant location QR code" />
       <a href="${mapUrl}">${mapUrl}</a>
     </main>
-    <script>
-      window.addEventListener('load', function () {
-        window.print();
-      });
-    </script>
+    <script>window.print();</script>
   </body>
 </html>`)
     printWindow.document.close()
@@ -809,6 +821,10 @@ function App() {
       ...current,
       announcement: { ...current.announcement, [field]: value },
     }))
+  }
+
+  const handleEventEnabledChange = (enabled: boolean) => {
+    updateSiteData((current) => ({ ...current, eventEnabled: enabled }))
   }
 
   const handleEventSubmit = async (e: React.FormEvent) => {
@@ -1782,7 +1798,7 @@ function App() {
         </section>
 
         {/* ── Blind Date Night event section ────────────────────────── */}
-        {(() => {
+        {siteData.eventEnabled ? (() => {
           const ec = EVENT_CONTENT[locale]
           return (
           <section className="panel-section event-panel" id="events" data-reveal>
@@ -1838,7 +1854,7 @@ function App() {
             </div>
           </section>
           )
-        })()}
+        })() : null}
 
           </>
         ) : null}
@@ -2048,9 +2064,18 @@ function App() {
             {/* ── Blind Date Night event registrations admin ────────────── */}
             <article className="admin-card admin-card-full" data-reveal>
               <div className="admin-card-head">
-                <h3>Blind Date Night – Registrations</h3>
-                <span>View all event registrations and top compatible pairs.</span>
+                <h3>Blind Date Night – Event &amp; Registrations</h3>
+                <span>Control event visibility on the main page and view all registrations.</span>
               </div>
+
+              <label className="admin-toggle-field">
+                <input
+                  type="checkbox"
+                  checked={siteData.eventEnabled ?? true}
+                  onChange={(e) => handleEventEnabledChange(e.target.checked)}
+                />
+                <span>Show Blind Date Night section on website</span>
+              </label>
 
               <button
                 type="button"
@@ -2182,7 +2207,7 @@ function App() {
                 <a className="button secondary" href={activeMapUrl} target="_blank" rel="noreferrer">
                   Show location on map
                 </a>
-                <button type="button" className="button secondary" onClick={handlePrintLocationQr}>
+                <button type="button" className="button secondary" onClick={() => void handlePrintLocationQr()}>
                   Print QR code
                 </button>
               </div>
@@ -2936,7 +2961,7 @@ function App() {
             >
               {copy.ctaMaps}
             </a>
-            <button type="button" className="button secondary" onClick={handlePrintLocationQr}>
+            <button type="button" className="button secondary" onClick={() => void handlePrintLocationQr()}>
               Print location QR
             </button>
             <a className="button secondary" href="/admin">

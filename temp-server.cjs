@@ -325,6 +325,7 @@ function normalizeSiteData(payload) {
       text: normalizeOptionalText(siteData.announcement && siteData.announcement.text, 300),
       enabled: normalizeBoolean(siteData.announcement && siteData.announcement.enabled, false),
     },
+    eventEnabled: normalizeBoolean(siteData.eventEnabled, true),
   }
 }
 

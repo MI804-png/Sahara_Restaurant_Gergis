@@ -90,6 +90,7 @@ function normalizeSiteData(siteData) {
       text: String(siteData.announcement && siteData.announcement.text || '').trim().slice(0, 300),
       enabled: Boolean(siteData.announcement && siteData.announcement.enabled),
     },
+    eventEnabled: siteData.eventEnabled !== false,
   };
 }
 
