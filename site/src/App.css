@@ -296,6 +296,9 @@
 .policy-card strong {
   color: var(--ink-900);
   font-size: 1rem;
+  word-break: break-word;
+  overflow-wrap: anywhere;
+  min-width: 0;
 }
 
 .location-map-link {
