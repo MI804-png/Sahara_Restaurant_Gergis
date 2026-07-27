@@ -19,11 +19,13 @@ import {
   getOfferStatus,
   getSalesQuantity,
   getSalesSummary,
+  type DayKey,
   type OfferStatus,
   type SiteData,
   type SiteDataResponse,
   type SiteMetrics,
   type SiteOffer,
+  DAYS,
 } from './siteData'
 
 const showcaseImageSrc = '/photos/photo-01.jpg'
@@ -35,6 +37,15 @@ const restaurantName = 'Sahara Restaurant'
 const defaultMapsSearchUrl =
   'https://www.google.com/maps?q=47.48818588256836,19.097597122192383&z=17&hl=en'
 const visitSessionKey = 'sahara-visit-tracked-v1'
+const DAY_LABELS: Record<DayKey, Record<'hu' | 'en' | 'ar', string>> = {
+  monday:    { hu: 'Hétfő',     en: 'Monday',    ar: 'الاثنين'  },
+  tuesday:   { hu: 'Kedd',      en: 'Tuesday',   ar: 'الثلاثاء' },
+  wednesday: { hu: 'Szerda',    en: 'Wednesday', ar: 'الأربعاء' },
+  thursday:  { hu: 'Csütörtök', en: 'Thursday',  ar: 'الخميس'   },
+  friday:    { hu: 'Péntek',    en: 'Friday',    ar: 'الجمعة'   },
+  saturday:  { hu: 'Szombat',   en: 'Saturday',  ar: 'السبت'    },
+  sunday:    { hu: 'Vasárnap',  en: 'Sunday',    ar: 'الأحد'    },
+}
 const apiPaths = {
   siteData: '/api/site-data',
   trackVisit: '/api/track-visit',
@@ -633,12 +644,15 @@ function App() {
     printWindow.document.close()
   }
 
-  const handleHoursChange = (field: 'open' | 'close', value: string) => {
+  const handleHoursChange = (day: DayKey, field: 'open' | 'close' | 'closed', value: string | boolean) => {
     updateSiteData((current) => ({
       ...current,
       hours: {
         ...current.hours,
-        [field]: value,
+        [day]: {
+          ...current.hours[day],
+          [field]: value,
+        },
       },
     }))
   }
@@ -1689,23 +1703,41 @@ function App() {
                 <span>Shown everywhere the site displays operating time.</span>
               </div>
 
-              <div className="admin-field-row compact-row">
-                <label className="admin-field">
-                  <span>Open</span>
-                  <input
-                    type="time"
-                    value={siteData.hours.open}
-                    onChange={(event) => handleHoursChange('open', event.target.value)}
-                  />
-                </label>
-                <label className="admin-field">
-                  <span>Close</span>
-                  <input
-                    type="time"
-                    value={siteData.hours.close}
-                    onChange={(event) => handleHoursChange('close', event.target.value)}
-                  />
-                </label>
+              <div className="admin-hours-grid">
+                {DAYS.map((day) => {
+                  const dh = siteData.hours[day]
+                  return (
+                    <div key={day} className={`admin-hours-row${dh.closed ? ' is-closed' : ''}`}>
+                      <span className="admin-hours-day">{DAY_LABELS[day][locale]}</span>
+                      <label className="admin-field admin-hours-time-field">
+                        <span>Open</span>
+                        <input
+                          type="time"
+                          value={dh.open}
+                          disabled={dh.closed}
+                          onChange={(e) => handleHoursChange(day, 'open', e.target.value)}
+                        />
+                      </label>
+                      <label className="admin-field admin-hours-time-field">
+                        <span>Close</span>
+                        <input
+                          type="time"
+                          value={dh.close}
+                          disabled={dh.closed}
+                          onChange={(e) => handleHoursChange(day, 'close', e.target.value)}
+                        />
+                      </label>
+                      <label className="admin-toggle-field admin-hours-toggle">
+                        <input
+                          type="checkbox"
+                          checked={dh.closed}
+                          onChange={(e) => handleHoursChange(day, 'closed', e.target.checked)}
+                        />
+                        <span>Closed</span>
+                      </label>
+                    </div>
+                  )
+                })}
               </div>
             </article>
 

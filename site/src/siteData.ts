@@ -26,10 +26,19 @@ export type EditableGalleryImage = {
   src: string
 }
 
-export type SiteHours = {
+export type DayHours = {
   open: string
   close: string
+  closed: boolean
 }
+
+export const DAYS = [
+  'monday', 'tuesday', 'wednesday', 'thursday', 'friday', 'saturday', 'sunday',
+] as const
+
+export type DayKey = (typeof DAYS)[number]
+
+export type SiteHours = Record<DayKey, DayHours>
 
 export type SiteBusinessDetails = {
   locationLabel: string
@@ -168,10 +177,17 @@ function buildDefaultGalleryImages(): EditableGalleryImage[] {
   }))
 }
 
+const defaultDay: DayHours = { open: '08:00', close: '15:00', closed: false }
+
 export const defaultSiteData: SiteData = {
   hours: {
-    open: '08:00',
-    close: '15:00',
+    monday:    { ...defaultDay },
+    tuesday:   { ...defaultDay },
+    wednesday: { ...defaultDay },
+    thursday:  { ...defaultDay },
+    friday:    { ...defaultDay },
+    saturday:  { ...defaultDay },
+    sunday:    { ...defaultDay },
   },
   business: {
     locationLabel: '47.4881859, 19.0975971',
@@ -189,12 +205,19 @@ export const defaultSiteData: SiteData = {
   productSales: [],
 }
 
+function cloneDayHours(d: DayHours | undefined): DayHours {
+  return {
+    open: d?.open ?? '08:00',
+    close: d?.close ?? '15:00',
+    closed: d?.closed ?? false,
+  }
+}
+
 export function cloneSiteData(siteData: SiteData): SiteData {
   return {
-    hours: {
-      open: siteData.hours.open,
-      close: siteData.hours.close,
-    },
+    hours: Object.fromEntries(
+      DAYS.map((day) => [day, cloneDayHours(siteData.hours[day])]),
+    ) as SiteHours,
     business: {
       locationLabel: siteData.business.locationLabel,
       phoneNumber: siteData.business.phoneNumber,
@@ -377,19 +400,41 @@ function formatTime(locale: Locale, value: string) {
   }).format(date)
 }
 
+function getTodayDayKey(): DayKey {
+  const idx = new Date().getDay() // 0 = Sunday
+  return (['sunday', 'monday', 'tuesday', 'wednesday', 'thursday', 'friday', 'saturday'] as DayKey[])[idx]
+}
+
 function getHoursLabel(locale: Locale, hours: SiteHours) {
-  const openLabel = formatTime(locale, hours.open)
-  const closeLabel = formatTime(locale, hours.close)
+  const allOpenSame =
+    DAYS.every((d) => !hours[d].closed) &&
+    DAYS.every((d) => hours[d].open === hours.monday.open && hours[d].close === hours.monday.close)
 
-  if (locale === 'hu') {
-    return `Minden nap ${openLabel}-${closeLabel}`
+  if (allOpenSame) {
+    const openLabel = formatTime(locale, hours.monday.open)
+    const closeLabel = formatTime(locale, hours.monday.close)
+    return locale === 'hu'
+      ? `Minden nap ${openLabel}\u2013${closeLabel}`
+      : locale === 'ar'
+        ? `\u064a\u0648\u0645\u064a\u0627 ${openLabel} \u2013 ${closeLabel}`
+        : `Daily ${openLabel}\u2013${closeLabel}`
   }
 
-  if (locale === 'ar') {
-    return `يوميا ${openLabel} - ${closeLabel}`
+  const today = getTodayDayKey()
+  const dh = hours[today]
+
+  if (dh.closed) {
+    return locale === 'hu' ? 'Ma: Z\u00e1rva' : locale === 'ar' ? '\u0627\u0644\u064a\u0648\u0645: \u0645\u063a\u0644\u0642' : 'Today: Closed'
   }
 
-  return `Daily ${openLabel} - ${closeLabel}`
+  const openLabel = formatTime(locale, dh.open)
+  const closeLabel = formatTime(locale, dh.close)
+
+  return locale === 'hu'
+    ? `Ma: ${openLabel}\u2013${closeLabel}`
+    : locale === 'ar'
+      ? `\u0627\u0644\u064a\u0648\u0645: ${openLabel} \u2013 ${closeLabel}`
+      : `Today: ${openLabel}\u2013${closeLabel}`
 }
 
 function getDeliveryLabel(locale: Locale, deliveryAvailable: boolean) {
@@ -417,19 +462,18 @@ function getPhoneLabel(locale: Locale) {
 }
 
 function getStoryNote(locale: Locale, hours: SiteHours, deliveryAvailable: boolean) {
-  const openLabel = formatTime(locale, hours.open)
-  const closeLabel = formatTime(locale, hours.close)
+  const hoursLabel = getHoursLabel(locale, hours)
   const deliveryLabel = getDeliveryLabel(locale, deliveryAvailable)
 
   if (locale === 'hu') {
-    return `A helyszín pontos koordinátával van bekötve a térképhez, a nyitvatartás minden nap ${openLabel} és ${closeLabel} között van, a kiszállítás állapota pedig: ${deliveryLabel.toLowerCase()}.`
+    return `A helysz\u00edn pontos koordin\u00e1t\u00e1val van bek\u00f6tve a t\u00e9rk\u00e9phez, nyitvatart\u00e1s: ${hoursLabel}, kisz\u00e1ll\u00edt\u00e1s: ${deliveryLabel.toLowerCase()}.`
   }
 
   if (locale === 'ar') {
-    return `تم ربط الموقع الان باحداثيات Google Maps الدقيقة، وساعات العمل يوميا من ${openLabel} حتى ${closeLabel}، وحالة التوصيل الحالية هي: ${deliveryLabel}.`
+    return `\u062a\u0645 \u0631\u0628\u0637 \u0627\u0644\u0645\u0648\u0642\u0639 \u0628\u0627\u062d\u062f\u0627\u062b\u064a\u0627\u062a \u062f\u0642\u064a\u0642\u0629\u060c \u0633\u0627\u0639\u0627\u062a \u0627\u0644\u0639\u0645\u0644: ${hoursLabel}\u060c \u0627\u0644\u062a\u0648\u0635\u064a\u0644: ${deliveryLabel}.`
   }
 
-  return `The location is now wired to the exact Google Maps coordinates, opening hours are set to daily from ${openLabel} to ${closeLabel}, and the current delivery status is ${deliveryLabel.toLowerCase()}.`
+  return `Location pinned to exact Google Maps coordinates. Hours: ${hoursLabel}. Delivery: ${deliveryLabel.toLowerCase()}.`
 }
 
 export function getLocalizedContent(

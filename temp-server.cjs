@@ -256,6 +256,28 @@ function normalizeMetrics(metrics) {
   }
 }
 
+const DAYS = ['monday', 'tuesday', 'wednesday', 'thursday', 'friday', 'saturday', 'sunday']
+
+function normalizeDayHours(raw, defaultOpen, defaultClose) {
+  return {
+    open: normalizeTime(raw && raw.open, defaultOpen || '08:00'),
+    close: normalizeTime(raw && raw.close, defaultClose || '15:00'),
+    closed: normalizeBoolean(raw && raw.closed, false),
+  }
+}
+
+function normalizeSiteHours(rawHours) {
+  const h = rawHours && typeof rawHours === 'object' ? rawHours : {}
+  // Migration from old format: { open, close } -> per-day record
+  const isOldFormat = typeof h.open === 'string' && !h.monday
+  const result = {}
+  for (const day of DAYS) {
+    const src = isOldFormat ? { open: h.open, close: h.close } : h[day]
+    result[day] = normalizeDayHours(src)
+  }
+  return result
+}
+
 function normalizeSiteData(payload) {
   const rawSiteData = payload && typeof payload === 'object' && payload.siteData
     ? payload.siteData
@@ -263,10 +285,7 @@ function normalizeSiteData(payload) {
   const siteData = rawSiteData && typeof rawSiteData === 'object' ? rawSiteData : {}
 
   return {
-    hours: {
-      open: normalizeTime(siteData.hours && siteData.hours.open, '08:00'),
-      close: normalizeTime(siteData.hours && siteData.hours.close, '15:00'),
-    },
+    hours: normalizeSiteHours(siteData.hours),
     business: {
       locationLabel:
         normalizeOptionalText(siteData.business && siteData.business.locationLabel, 160) ||
