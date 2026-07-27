@@ -62,26 +62,35 @@ const EVENT_CONTENT = {
     location: 'Sahara Restaurant, Budapest',
     registerBtn: 'Regisztrálok az estre',
     modalTitle: 'Regisztráció – Vak Randevú Est',
+    sectionBasic: 'Alapadatok',
+    sectionGoal: 'Kapcsolat célja',
+    sectionAbout: 'Rólad',
+    sectionStory: 'Kivel keresed a találkozót?',
     fieldName: 'Teljes neved',
     fieldAge: 'Korod',
     fieldGender: 'Nemed',
-    fieldInterests: 'Érdeklődési körök (pl. zene, sport, főzés)',
+    fieldGoal: 'Mit keresel?',
+    fieldAgeRange: 'Partner preferált kora',
+    fieldAgeMin: 'Min. kor',
+    fieldAgeMax: 'Max. kor',
+    fieldInterests: 'Érdeklődési körök (pl. zene, sport, főzés, utazás)',
     fieldPersonality: 'Személyiség típusod',
+    fieldCommunication: 'Kommunikációs stílusod',
+    fieldLifestyle: 'Életstílusod',
+    fieldValues: 'Legfontosabb értéked',
     fieldLookingFor: 'Mit keresel egy partnerben?',
-    fieldRating: 'Önértékelés (1 = szerény, 5 = magabiztos)',
+    fieldRating: 'Önbizalom szintje (1 = szerény, 5 = magabiztos)',
     fieldTerms: 'Elfogadom az adatvédelmi irányelveket',
     submitBtn: 'Küldés',
     submitting: 'Küldés...',
     successTitle: 'Köszönjük a regisztrációdat! 🎉',
     successText: 'Hamarosan felvesszük veled a kapcsolatot a WhatsAppon vagy e-mailben.',
     genders: { female: 'Nő', male: 'Férfi', other: 'Egyéb' },
-    personalities: {
-      romantic: 'Romantikus',
-      adventurous: 'Kalandvágyó',
-      intellectual: 'Intellektuális',
-      creative: 'Kreatív',
-      spontaneous: 'Spontán',
-    },
+    goals: { casual: 'Laza ismerkedés', dating: 'Randevúzás', serious: 'Komoly kapcsolat', marriage: 'Házasság' },
+    personalities: { romantic: 'Romantikus', adventurous: 'Kalandvágyó', intellectual: 'Intellektuális', creative: 'Kreatív', spontaneous: 'Spontán' },
+    communications: { expressive: 'Nyílt / kifejező', reserved: 'Visszafogott / megfontolt', analytical: 'Elemző / logikus', empathetic: 'Empatikus / érzékeny' },
+    lifestyles: { active: 'Aktív / sportos', moderate: 'Kiegyensúlyozott', homebody: 'Otthonszerető' },
+    valuesList: { family: 'Család', career: 'Karrier', adventure: 'Kaland', creativity: 'Kreativitás', spirituality: 'Spiritualitás', security: 'Biztonság' },
   },
   en: {
     eyebrow: 'Special Evening',
@@ -95,26 +104,35 @@ const EVENT_CONTENT = {
     location: 'Sahara Restaurant, Budapest',
     registerBtn: 'Register for the event',
     modalTitle: 'Register – Blind Date Night',
+    sectionBasic: 'Basic info',
+    sectionGoal: 'Relationship goal',
+    sectionAbout: 'About you',
+    sectionStory: 'Who are you looking for?',
     fieldName: 'Full name',
     fieldAge: 'Your age',
     fieldGender: 'Gender',
-    fieldInterests: 'Interests (e.g. music, sport, cooking)',
+    fieldGoal: 'What are you looking for?',
+    fieldAgeRange: 'Preferred partner age',
+    fieldAgeMin: 'Min. age',
+    fieldAgeMax: 'Max. age',
+    fieldInterests: 'Interests (e.g. music, sport, cooking, travel)',
     fieldPersonality: 'Personality type',
-    fieldLookingFor: 'What are you looking for in a partner?',
-    fieldRating: 'Self-rating (1 = modest, 5 = confident)',
+    fieldCommunication: 'Communication style',
+    fieldLifestyle: 'Lifestyle',
+    fieldValues: 'Most important value',
+    fieldLookingFor: 'What do you look for in a partner?',
+    fieldRating: 'Self-confidence level (1 = modest, 5 = confident)',
     fieldTerms: 'I accept the privacy policy',
     submitBtn: 'Submit',
     submitting: 'Submitting...',
     successTitle: 'Thank you for registering! 🎉',
     successText: "We'll contact you shortly via WhatsApp or email.",
     genders: { female: 'Female', male: 'Male', other: 'Other' },
-    personalities: {
-      romantic: 'Romantic',
-      adventurous: 'Adventurous',
-      intellectual: 'Intellectual',
-      creative: 'Creative',
-      spontaneous: 'Spontaneous',
-    },
+    goals: { casual: 'Casual meeting', dating: 'Dating', serious: 'Serious relationship', marriage: 'Marriage' },
+    personalities: { romantic: 'Romantic', adventurous: 'Adventurous', intellectual: 'Intellectual', creative: 'Creative', spontaneous: 'Spontaneous' },
+    communications: { expressive: 'Open / expressive', reserved: 'Reserved / thoughtful', analytical: 'Analytical / logical', empathetic: 'Empathetic / sensitive' },
+    lifestyles: { active: 'Active / sporty', moderate: 'Balanced', homebody: 'Homebody' },
+    valuesList: { family: 'Family', career: 'Career', adventure: 'Adventure', creativity: 'Creativity', spirituality: 'Spirituality', security: 'Security' },
   },
   ar: {
     eyebrow: 'سهرة مميزة',
@@ -128,26 +146,35 @@ const EVENT_CONTENT = {
     location: 'مطعم الصحراء، بودابست',
     registerBtn: 'سجّل في الفعالية',
     modalTitle: 'التسجيل – ليلة المواعدة العمياء',
+    sectionBasic: 'المعلومات الأساسية',
+    sectionGoal: 'هدف العلاقة',
+    sectionAbout: 'عن نفسك',
+    sectionStory: 'من تبحث عنه؟',
     fieldName: 'الاسم الكامل',
     fieldAge: 'عمرك',
     fieldGender: 'الجنس',
-    fieldInterests: 'الاهتمامات (مثل الموسيقى والرياضة والطبخ)',
+    fieldGoal: 'ماذا تبحث عنه؟',
+    fieldAgeRange: 'العمر المفضل للشريك',
+    fieldAgeMin: 'الحد الأدنى',
+    fieldAgeMax: 'الحد الأقصى',
+    fieldInterests: 'الاهتمامات (مثل الموسيقى والرياضة والطبخ والسفر)',
     fieldPersonality: 'نوع شخصيتك',
+    fieldCommunication: 'أسلوب التواصل',
+    fieldLifestyle: 'نمط حياتك',
+    fieldValues: 'أهم قيمة لديك',
     fieldLookingFor: 'ما الذي تبحث عنه في الشريك؟',
-    fieldRating: 'تقييم الذات (١ = متواضع، ٥ = واثق)',
+    fieldRating: 'مستوى الثقة بالنفس (١ = متواضع، ٥ = واثق)',
     fieldTerms: 'أوافق على سياسة الخصوصية',
     submitBtn: 'إرسال',
     submitting: '...إرسال',
     successTitle: '!شكراً لتسجيلك 🎉',
     successText: 'سنتواصل معك قريباً عبر واتساب أو البريد الإلكتروني.',
     genders: { female: 'أنثى', male: 'ذكر', other: 'غير ذلك' },
-    personalities: {
-      romantic: 'رومانسي',
-      adventurous: 'مغامر',
-      intellectual: 'مثقف',
-      creative: 'مبدع',
-      spontaneous: 'تلقائي',
-    },
+    goals: { casual: 'تعارف خفيف', dating: 'مواعدة', serious: 'علاقة جادة', marriage: 'زواج' },
+    personalities: { romantic: 'رومانسي', adventurous: 'مغامر', intellectual: 'مثقف', creative: 'مبدع', spontaneous: 'تلقائي' },
+    communications: { expressive: 'منفتح / معبّر', reserved: 'هادئ / متأمل', analytical: 'تحليلي / منطقي', empathetic: 'عاطفي / متعاطف' },
+    lifestyles: { active: 'نشيط / رياضي', moderate: 'متوازن', homebody: 'يفضل المنزل' },
+    valuesList: { family: 'الأسرة', career: 'المهنة', adventure: 'المغامرة', creativity: 'الإبداع', spirituality: 'الروحانيات', security: 'الأمان' },
   },
 } as const
 const apiPaths = {
@@ -380,25 +407,61 @@ function escapeHtml(value: string) {
 
 function getCompatibilityScore(a: EventRegistration, b: EventRegistration): number {
   let score = 0
-  const genders = [a.gender, b.gender].sort()
-  if (genders[0] === 'female' && genders[1] === 'male') score += 40
-  else score += 20
-  const compat: Record<string, string[]> = {
-    adventurous: ['spontaneous', 'romantic'],
-    romantic: ['intellectual', 'adventurous'],
-    intellectual: ['creative', 'romantic'],
-    creative: ['intellectual', 'adventurous'],
-    spontaneous: ['adventurous', 'creative'],
+
+  // ── 1. Relationship goal match (0–30) ──────────────────────────────
+  // This is the most critical factor — mismatched goals = poor match
+  const GOAL_SCORE: Record<string, Record<string, number>> = {
+    marriage: { marriage: 30, serious: 22, dating: 10, casual: 0 },
+    serious:  { marriage: 22, serious: 28, dating: 16, casual: 4 },
+    dating:   { marriage: 10, serious: 16, dating: 24, casual: 10 },
+    casual:   { marriage: 0,  serious: 4,  dating: 10, casual: 20 },
   }
-  if (a.personality === b.personality) score += 30
-  else if (compat[a.personality]?.includes(b.personality)) score += 20
-  const ai = a.interests.toLowerCase().split(/[,;\s]+/).filter(Boolean)
-  const bi = b.interests.toLowerCase().split(/[,;\s]+/).filter(Boolean)
-  score += Math.min(ai.filter((x) => bi.includes(x)).length * 10, 30)
-  const ageDiff = Math.abs(Number(a.age) - Number(b.age))
-  if (ageDiff <= 5) score += 10
-  else if (ageDiff <= 10) score += 5
-  return Math.min(score, 100)
+  score += GOAL_SCORE[a.goal]?.[b.goal] ?? 12
+
+  // ── 2. Personality complement (0–20) ───────────────────────────────
+  // Complementary types score highest; identical score lower (less spark)
+  const PERS_SCORE: Record<string, Record<string, number>> = {
+    romantic:     { romantic: 8,  adventurous: 20, intellectual: 18, creative: 14, spontaneous: 14 },
+    adventurous:  { romantic: 20, adventurous: 8,  intellectual: 12, creative: 15, spontaneous: 20 },
+    intellectual: { romantic: 18, adventurous: 12, intellectual: 8,  creative: 20, spontaneous: 10 },
+    creative:     { romantic: 14, adventurous: 15, intellectual: 20, creative: 8,  spontaneous: 16 },
+    spontaneous:  { romantic: 14, adventurous: 20, intellectual: 10, creative: 16, spontaneous: 8  },
+  }
+  score += PERS_SCORE[a.personality]?.[b.personality] ?? 10
+
+  // ── 3. Communication style complement (0–15) ───────────────────────
+  // Balanced opposites work best; identical can create echo chambers
+  const COMM_SCORE: Record<string, Record<string, number>> = {
+    expressive: { expressive: 8,  reserved: 15, analytical: 8,  empathetic: 12 },
+    reserved:   { expressive: 15, reserved: 8,  analytical: 12, empathetic: 10 },
+    analytical: { expressive: 8,  reserved: 12, analytical: 8,  empathetic: 15 },
+    empathetic: { expressive: 12, reserved: 10, analytical: 15, empathetic: 8  },
+  }
+  score += COMM_SCORE[a.communication]?.[b.communication] ?? 8
+
+  // ── 4. Shared interests (0–15) ─────────────────────────────────────
+  const ai = a.interests.toLowerCase().split(/[,;\s]+/).filter((w) => w.length > 2)
+  const bi = b.interests.toLowerCase().split(/[,;\s]+/).filter((w) => w.length > 2)
+  score += Math.min(ai.filter((w) => bi.includes(w)).length * 3, 15)
+
+  // ── 5. Lifestyle compatibility (0–10) ──────────────────────────────
+  const LIFE_LEVELS: Record<string, number> = { active: 2, moderate: 1, homebody: 0 }
+  const lifeDiff = Math.abs((LIFE_LEVELS[a.lifestyle] ?? 1) - (LIFE_LEVELS[b.lifestyle] ?? 1))
+  score += [10, 7, 2][lifeDiff] ?? 0
+
+  // ── 6. Age preference reciprocity (0–7) ────────────────────────────
+  const aAge = Number(a.age), bAge = Number(b.age)
+  const aMin = Number(a.ageMin || 18), aMax = Number(a.ageMax || 99)
+  const bMin = Number(b.ageMin || 18), bMax = Number(b.ageMax || 99)
+  const aLikesB = bAge >= aMin && bAge <= aMax
+  const bLikesA = aAge >= bMin && aAge <= bMax
+  if (aLikesB && bLikesA) score += 7
+  else if (aLikesB || bLikesA) score += 3
+
+  // ── 7. Core values alignment (0–3) ─────────────────────────────────
+  if (a.values && b.values && a.values === b.values) score += 3
+
+  return Math.min(Math.round(score), 100)
 }
 
 function getCompatibilityLabel(score: number): string {
@@ -440,8 +503,11 @@ function App() {
   const [showEventModal, setShowEventModal] = useState(false)
   const [eventForm, setEventForm] = useState({
     name: '', age: '', gender: 'female',
+    goal: 'serious', ageMin: '', ageMax: '',
     interests: '', personality: 'romantic',
-    lookingFor: '', rating: 5, terms: false,
+    communication: 'expressive', lifestyle: 'moderate',
+    values: 'family', lookingFor: '',
+    rating: 5, terms: false,
   })
   const [eventSubmitting, setEventSubmitting] = useState(false)
   const [eventSubmitted, setEventSubmitted] = useState(false)
@@ -781,7 +847,8 @@ function App() {
   }
 
   const handlePrintLocationQr = async () => {
-    const printWindow = window.open('', '_blank', 'noopener,noreferrer,width=620,height=760')
+    // Must open popup synchronously (in direct response to click) to avoid popup blockers
+    const printWindow = window.open('', '_blank', 'width=660,height=780')
 
     if (!printWindow) {
       return
@@ -790,48 +857,58 @@ function App() {
     const locationLabel = escapeHtml(siteData.business.locationLabel || 'Sahara Restaurant')
     const mapUrl = escapeHtml(activeMapUrl)
 
-    // Pre-fetch QR image as a data URL so it prints without a blank page
-    let embeddedQr = qrCodeUrl
+    // Write placeholder immediately — popup must not stay on about:blank during the fetch
+    printWindow.document.write(
+      '<html><body style="font-family:Arial;text-align:center;padding:48px;color:#4b3323">' +
+      '<p style="font-size:1.1rem">Generating QR code\u2026</p></body></html>'
+    )
+
+    // Pre-fetch QR image as a data URL so it prints without needing the network
+    let imgSrc = escapeHtml(qrCodeUrl)
     try {
       const resp = await fetch(qrCodeUrl)
       const blob = await resp.blob()
-      embeddedQr = await new Promise<string>((resolve, reject) => {
+      const dataUrl = await new Promise<string>((resolve, reject) => {
         const reader = new FileReader()
         reader.onload = () => resolve(reader.result as string)
         reader.onerror = reject
         reader.readAsDataURL(blob)
       })
+      imgSrc = escapeHtml(dataUrl)
     } catch {
       // fall back to original URL
     }
 
-    const imageUrl = escapeHtml(embeddedQr)
-
+    // Overwrite with final content, then trigger print directly
+    printWindow.document.open()
     printWindow.document.write(`<!doctype html>
 <html>
   <head>
     <meta charset="utf-8" />
     <title>Sahara Restaurant Location QR</title>
     <style>
-      body { font-family: Arial, sans-serif; margin: 0; padding: 24px; color: #1f140d; }
-      main { max-width: 520px; margin: 0 auto; display: grid; gap: 14px; text-align: center; }
-      img { width: 100%; max-width: 340px; margin: 0 auto; display: block; border: 1px solid #d7c3ac; border-radius: 18px; }
+      * { box-sizing: border-box; }
+      body { font-family: Arial, sans-serif; margin: 0; padding: 32px 24px; color: #1f140d; background: #fff; }
+      main { max-width: 460px; margin: 0 auto; display: flex; flex-direction: column; align-items: center; gap: 16px; text-align: center; }
+      img { width: 320px; height: 320px; border: 1px solid #d7c3ac; border-radius: 18px; display: block; }
       h1 { margin: 0; font-size: 1.6rem; }
       p { margin: 0; color: #4b3323; }
-      a { color: #7b3d1b; word-break: break-word; }
+      a { color: #7b3d1b; word-break: break-word; font-size: 0.85rem; }
+      @media print { @page { margin: 20mm; } }
     </style>
   </head>
   <body>
     <main>
       <h1>Sahara Restaurant</h1>
       <p>${locationLabel}</p>
-      <img src="${imageUrl}" alt="Restaurant location QR code" />
+      <img src="${imgSrc}" alt="Restaurant location QR code" />
       <a href="${mapUrl}">${mapUrl}</a>
     </main>
-    <script>window.print();</script>
   </body>
 </html>`)
     printWindow.document.close()
+    printWindow.focus()
+    printWindow.print()
   }
 
   const handleHoursChange = (day: DayKey, field: 'open' | 'close' | 'closed', value: string | boolean) => {
@@ -873,15 +950,20 @@ function App() {
           name: eventForm.name,
           age: eventForm.age,
           gender: eventForm.gender,
+          goal: eventForm.goal,
+          ageMin: eventForm.ageMin,
+          ageMax: eventForm.ageMax,
           interests: eventForm.interests,
           personality: eventForm.personality,
+          communication: eventForm.communication,
+          lifestyle: eventForm.lifestyle,
+          values: eventForm.values,
           lookingFor: eventForm.lookingFor,
           rating: eventForm.rating,
         }),
       })
       setEventSubmitted(true)
     } catch {
-      // allow submit to appear successful even if offline
       setEventSubmitted(true)
     } finally {
       setEventSubmitting(false)
@@ -3193,6 +3275,9 @@ function App() {
               </div>
             ) : (
               <form className="event-form" onSubmit={(e) => void handleEventSubmit(e)}>
+
+                {/* Section 1: Basic info */}
+                <p className="event-form-section">{ec.sectionBasic}</p>
                 <label className="event-field">
                   <span>{ec.fieldName} *</span>
                   <input
@@ -3206,11 +3291,12 @@ function App() {
 
                 <div className="event-field-row">
                   <label className="event-field">
-                    <span>{ec.fieldAge}</span>
+                    <span>{ec.fieldAge} *</span>
                     <input
                       type="number"
                       min="18"
                       max="99"
+                      required
                       value={eventForm.age}
                       onChange={(e) => setEventForm((f) => ({ ...f, age: e.target.value }))}
                     />
@@ -3228,6 +3314,52 @@ function App() {
                   </label>
                 </div>
 
+                {/* Section 2: Relationship goal */}
+                <p className="event-form-section">{ec.sectionGoal}</p>
+                <label className="event-field">
+                  <span>{ec.fieldGoal} *</span>
+                  <div className="event-choice-group">
+                    {(Object.entries(ec.goals) as [string, string][]).map(([k, v]) => (
+                      <button
+                        key={k}
+                        type="button"
+                        className={`event-choice-btn${eventForm.goal === k ? ' selected' : ''}`}
+                        onClick={() => setEventForm((f) => ({ ...f, goal: k }))}
+                      >
+                        {v}
+                      </button>
+                    ))}
+                  </div>
+                </label>
+
+                <div className="event-field">
+                  <span>{ec.fieldAgeRange}</span>
+                  <div className="event-field-row">
+                    <label className="event-field">
+                      <span>{ec.fieldAgeMin}</span>
+                      <input
+                        type="number"
+                        min="18"
+                        max="99"
+                        value={eventForm.ageMin}
+                        onChange={(e) => setEventForm((f) => ({ ...f, ageMin: e.target.value }))}
+                      />
+                    </label>
+                    <label className="event-field">
+                      <span>{ec.fieldAgeMax}</span>
+                      <input
+                        type="number"
+                        min="18"
+                        max="99"
+                        value={eventForm.ageMax}
+                        onChange={(e) => setEventForm((f) => ({ ...f, ageMax: e.target.value }))}
+                      />
+                    </label>
+                  </div>
+                </div>
+
+                {/* Section 3: About you */}
+                <p className="event-form-section">{ec.sectionAbout}</p>
                 <label className="event-field">
                   <span>{ec.fieldInterests}</span>
                   <input
@@ -3240,16 +3372,63 @@ function App() {
 
                 <label className="event-field">
                   <span>{ec.fieldPersonality}</span>
-                  <select
-                    value={eventForm.personality}
-                    onChange={(e) => setEventForm((f) => ({ ...f, personality: e.target.value }))}
-                  >
+                  <div className="event-choice-group">
                     {(Object.entries(ec.personalities) as [string, string][]).map(([k, v]) => (
-                      <option key={k} value={k}>{v}</option>
+                      <button
+                        key={k}
+                        type="button"
+                        className={`event-choice-btn${eventForm.personality === k ? ' selected' : ''}`}
+                        onClick={() => setEventForm((f) => ({ ...f, personality: k }))}
+                      >
+                        {v}
+                      </button>
                     ))}
-                  </select>
+                  </div>
                 </label>
 
+                <label className="event-field">
+                  <span>{ec.fieldCommunication}</span>
+                  <div className="event-choice-group">
+                    {(Object.entries(ec.communications) as [string, string][]).map(([k, v]) => (
+                      <button
+                        key={k}
+                        type="button"
+                        className={`event-choice-btn${eventForm.communication === k ? ' selected' : ''}`}
+                        onClick={() => setEventForm((f) => ({ ...f, communication: k }))}
+                      >
+                        {v}
+                      </button>
+                    ))}
+                  </div>
+                </label>
+
+                <div className="event-field-row">
+                  <label className="event-field">
+                    <span>{ec.fieldLifestyle}</span>
+                    <select
+                      value={eventForm.lifestyle}
+                      onChange={(e) => setEventForm((f) => ({ ...f, lifestyle: e.target.value }))}
+                    >
+                      {(Object.entries(ec.lifestyles) as [string, string][]).map(([k, v]) => (
+                        <option key={k} value={k}>{v}</option>
+                      ))}
+                    </select>
+                  </label>
+                  <label className="event-field">
+                    <span>{ec.fieldValues}</span>
+                    <select
+                      value={eventForm.values}
+                      onChange={(e) => setEventForm((f) => ({ ...f, values: e.target.value }))}
+                    >
+                      {(Object.entries(ec.valuesList) as [string, string][]).map(([k, v]) => (
+                        <option key={k} value={k}>{v}</option>
+                      ))}
+                    </select>
+                  </label>
+                </div>
+
+                {/* Section 4: Who you're looking for */}
+                <p className="event-form-section">{ec.sectionStory}</p>
                 <label className="event-field">
                   <span>{ec.fieldLookingFor}</span>
                   <textarea
