@@ -46,6 +46,49 @@ async function parseBody(req) {
   });
 }
 
+// Per-day hours normalization helpers
+const DAYS = ['monday','tuesday','wednesday','thursday','friday','saturday','sunday'];
+
+function normalizeTime(val, fallback) {
+  if (typeof val === 'string' && /^\d{2}:\d{2}$/.test(val)) return val;
+  return fallback;
+}
+
+function normalizeBoolean(val, fallback) {
+  if (typeof val === 'boolean') return val;
+  if (val === 'true') return true;
+  if (val === 'false') return false;
+  return fallback;
+}
+
+function normalizeDayHours(raw, defaultOpen, defaultClose) {
+  return {
+    open: normalizeTime(raw && raw.open, defaultOpen || '08:00'),
+    close: normalizeTime(raw && raw.close, defaultClose || '15:00'),
+    closed: normalizeBoolean(raw && raw.closed, false),
+  };
+}
+
+function normalizeSiteHours(rawHours) {
+  const h = rawHours && typeof rawHours === 'object' ? rawHours : {};
+  // Migrate old flat format { open, close } → per-day
+  const isOldFormat = typeof h.open === 'string' && !h.monday;
+  const result = {};
+  for (const day of DAYS) {
+    const src = isOldFormat ? { open: h.open, close: h.close } : h[day];
+    result[day] = normalizeDayHours(src);
+  }
+  return result;
+}
+
+function normalizeSiteData(siteData) {
+  if (!siteData || typeof siteData !== 'object') return {};
+  return {
+    ...siteData,
+    hours: normalizeSiteHours(siteData.hours),
+  };
+}
+
 // Helper: Load site data
 function loadSiteData() {
   try {
@@ -97,6 +140,7 @@ const backendServer = http.createServer((req, res) => {
   if (req.method === 'GET' && req.url === '/api/site-data') {
     try {
       const data = loadSiteData();
+      if (data.siteData) data.siteData = normalizeSiteData(data.siteData);
       res.writeHead(200);
       res.end(JSON.stringify(data));
     } catch (e) {
