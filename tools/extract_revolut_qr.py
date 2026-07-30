@@ -24,16 +24,18 @@ try:
 
     # Crop the QR code
     qr_code = img.crop((left, top, right, bottom))
+    
+    # Rotate 90 degrees counter-clockwise to make R vertical
+    qr_code_rotated = qr_code.rotate(90, expand=True)
 
-    # Save the cropped QR code
+    # Save the cropped and rotated QR code
     output_path = r'D:\Sahara_restaurant\site\public\media\revolut-qr.jpg'
-    qr_code.save(output_path, quality=95)
-    print(f"QR code extracted and saved to: {output_path}")
+    qr_code_rotated.save(output_path, quality=95)
+    print(f"QR code extracted, rotated, and saved to: {output_path}")
 
-    # Also create a higher resolution version if needed
-    qr_code_hq = img.crop((left, top, right, bottom))
+    # Also create a higher resolution version
     output_path_hq = r'D:\Sahara_restaurant\site\public\media\revolut-qr-hq.png'
-    qr_code_hq.save(output_path_hq, format='PNG')
+    qr_code_rotated.save(output_path_hq, format='PNG')
     print(f"High quality QR code saved to: {output_path_hq}")
     
 except Exception as e:
