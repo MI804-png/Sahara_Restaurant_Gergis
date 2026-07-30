@@ -219,9 +219,9 @@ export const content: Record<Locale, LocaleContent> = {
     donationIntro:
       'Az Ön nagylelkű támogatása segít nekünk új ételek bevezetésében, szolgáltatásaink javításában és vendégélményünk fejlesztésében. Minden hozzájárulást hálásan fogadunk!',
     donationQrTitle: 'Revolut QR kód szkennelése',
-    donationQrText: 'Nyissa meg a Revolut alkalmazást és szkennelje be a QR-kódot azonnali átutaláshoz. Felhasználónév: @ghrg586a',
+    donationQrText: 'Nyissa meg a Revolut alkalmazást és szkennelje be a QR-kódot azonnali átutaláshoz. Felhasználónév: girgis86',
     donationQrAlt: 'Revolut QR kód a Sahara Restaurant támogatásához',
-    donationUsername: '@ghrg586a',
+    donationUsername: 'girgis86',
     offersEyebrow: 'Ajánlatok',
     offersTitle: 'Időzített kedvezmények ügyfélkorláttal és egyértelmű időablakok.',
     offersIntro:
@@ -364,9 +364,9 @@ export const content: Record<Locale, LocaleContent> = {
     donationIntro:
       'Your generous support helps us introduce new dishes, improve our services, and enhance your dining experience. Every contribution is greatly appreciated!',
     donationQrTitle: 'Scan Revolut QR Code',
-    donationQrText: 'Open the Revolut app and scan the QR code for instant transfer. Username: @ghrg586a',
+    donationQrText: 'Open the Revolut app and scan the QR code for instant transfer. Username: girgis86',
     donationQrAlt: 'Revolut QR code for supporting Sahara Restaurant',
-    donationUsername: '@ghrg586a',
+    donationUsername: 'girgis86',
     offersEyebrow: 'Offer board',
     offersTitle: 'Timed discounts with client limits and clear schedule windows.',
     offersIntro:
@@ -509,9 +509,9 @@ export const content: Record<Locale, LocaleContent> = {
     donationIntro:
       'دعمك الكريم يساعدنا في تقديم أطباق جديدة وتحسين خدماتنا وتعزيز تجربة تناول الطعام. نقدر كل مساهمة!',
     donationQrTitle: 'امسح رمز Revolut QR',
-    donationQrText: 'افتح تطبيق Revolut وامسح رمز QR للتحويل الفوري. اسم المستخدم: @ghrg586a',
+    donationQrText: 'افتح تطبيق Revolut وامسح رمز QR للتحويل الفوري. اسم المستخدم: girgis86',
     donationQrAlt: 'رمز Revolut QR لدعم مطعم Sahara',
-    donationUsername: '@ghrg586a',
+    donationUsername: 'girgis86',
     offersEyebrow: 'لوحة العروض',
     offersTitle: 'خصومات مؤقتة بحدود العملاء ونوافذ جدولة واضحة.',
     offersIntro:
