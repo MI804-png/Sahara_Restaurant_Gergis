@@ -3251,19 +3251,29 @@ function App() {
             ) : null}
           </div>
 
-          <a
-            className="qr-card"
-            href={activeMapUrl}
-            target="_blank"
-            rel="noreferrer"
-            aria-label={copy.qrTitle}
-          >
-            <img src={qrCodeUrl} alt={copy.qrAlt} loading="lazy" />
-            <div className="qr-copy">
-              <strong>{copy.qrTitle}</strong>
-              <span>{copy.qrText}</span>
+          <div className="footer-qr-grid">
+            <a
+              className="qr-card"
+              href={activeMapUrl}
+              target="_blank"
+              rel="noreferrer"
+              aria-label={copy.qrTitle}
+            >
+              <img src={qrCodeUrl} alt={copy.qrAlt} loading="lazy" />
+              <div className="qr-copy">
+                <strong>{copy.qrTitle}</strong>
+                <span>{copy.qrText}</span>
+              </div>
+            </a>
+
+            <div className="qr-card qr-card-revolut">
+              <img src="/media/revolut-qr-hq.png" alt={copy.donationQrAlt} loading="lazy" />
+              <div className="qr-copy">
+                <strong>{copy.donationQrTitle}</strong>
+                <span>{copy.donationUsername}</span>
+              </div>
             </div>
-          </a>
+          </div>
         </div>
       </footer>
       )}
