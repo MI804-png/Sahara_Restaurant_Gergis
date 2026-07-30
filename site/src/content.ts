@@ -68,6 +68,13 @@ export type LocaleContent = {
   qrTitle: string
   qrText: string
   qrAlt: string
+  donationEyebrow: string
+  donationTitle: string
+  donationIntro: string
+  donationQrTitle: string
+  donationQrText: string
+  donationQrAlt: string
+  donationUsername: string
 }
 
 export const localeOrder: Locale[] = ['hu', 'en', 'ar']
@@ -310,6 +317,22 @@ export const content: Record<Locale, LocaleContent> = {
     qrTitle: 'Scan the location QR code',
     qrText: 'Open the exact Google Maps location directly from your phone.',
     qrAlt: 'QR code for the Sahara Restaurant Google Maps location',
+    donationEyebrow: 'Support',
+    donationTitle: 'Support our menu development and service expansion',
+    donationIntro:
+      'Your generous support helps us introduce new dishes, improve our services, and enhance your dining experience. Every contribution is greatly appreciated!',
+    donationQrTitle: 'Scan Revolut QR Code',
+    donationQrText: 'Open the Revolut app and scan the QR code for instant transfer. Username: @ghrg586a',
+    donationQrAlt: 'Revolut QR code for supporting Sahara Restaurant',
+    donationUsername: '@ghrg586a',
+    donationEyebrow: 'Támogatás',
+    donationTitle: 'Támogassa étlapfejlesztésünket és szolgáltatásaink bővítését',
+    donationIntro:
+      'Az Ön nagylelkű támogatása segít nekünk új ételek bevezetésében, szolgáltatásaink javításában és vendégélményünk fejlesztésében. Minden hozzájárulást hálásan fogadunk!',
+    donationQrTitle: 'Revolut QR kód szkennelése',
+    donationQrText: 'Nyissa meg a Revolut alkalmazást és szkennelje be a QR-kódot azonnali átutaláshoz. Felhasználónév: @ghrg586a',
+    donationQrAlt: 'Revolut QR kód a Sahara Restaurant támogatásához',
+    donationUsername: '@ghrg586a',
   },
   ar: {
     browserTitle: 'Sahara Restaurant | Hungary',
@@ -429,5 +452,13 @@ export const content: Record<Locale, LocaleContent> = {
     qrTitle: 'امسح رمز الموقع',
     qrText: 'افتح موقع المطعم مباشرة على Google Maps من هاتفك.',
     qrAlt: 'رمز QR لموقع Sahara Restaurant على Google Maps',
+    donationEyebrow: 'الدعم',
+    donationTitle: 'ادعم تطوير قائمتنا وتوسيع خدماتنا',
+    donationIntro:
+      'دعمك الكريم يساعدنا في تقديم أطباق جديدة وتحسين خدماتنا وتعزيز تجربة تناول الطعام. نقدر كل مساهمة!',
+    donationQrTitle: 'امسح رمز Revolut QR',
+    donationQrText: 'افتح تطبيق Revolut وامسح رمز QR للتحويل الفوري. اسم المستخدم: @ghrg586a',
+    donationQrAlt: 'رمز Revolut QR لدعم مطعم Sahara',
+    donationUsername: '@ghrg586a',
   },
 }

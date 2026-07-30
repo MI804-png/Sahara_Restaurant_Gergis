@@ -768,6 +768,30 @@ function App() {
     }
   }, [isAdminRoute])
 
+  // Initialize Google AdSense ads
+  useEffect(() => {
+    if (!isAdminRoute && typeof window !== 'undefined') {
+      const loadAds = () => {
+        try {
+          const adsbygoogle = (window as any).adsbygoogle || []
+          const ads = document.querySelectorAll('.adsbygoogle')
+          ads.forEach(() => {
+            adsbygoogle.push({})
+          })
+        } catch (error) {
+          console.error('AdSense initialization error:', error)
+        }
+      }
+
+      // Delay ad initialization to ensure page is loaded
+      const timer = setTimeout(loadAds, 1500)
+
+      return () => {
+        clearTimeout(timer)
+      }
+    }
+  }, [isAdminRoute, locale])
+
   const handleInstall = async () => {
     if (!installPrompt) {
       return
@@ -1989,14 +2013,50 @@ function App() {
             {/* Google AdSense placeholder – replace with real ad tag once account is activated */}
             <div className="ad-slot" aria-label="Advertisement" role="complementary">
               <span className="ad-slot-label">Ad</span>
-              {/* <ins className="adsbygoogle" style={{ display: 'block' }}
+              <ins className="adsbygoogle" style={{ display: 'block' }}
                 data-ad-client="ca-pub-XXXXXXXXXXXXXXXX"
                 data-ad-slot="XXXXXXXXXX"
-                data-ad-format="auto" data-full-width-responsive="true" /> */}
+                data-ad-format="auto" data-full-width-responsive="true" />
             </div>
           </section>
           )
         })() : null}
+
+        {/* ── Donation / Support section ────────────────────────── */}
+        {!isAdminRoute ? (
+          <section className="panel-section donation-panel" id="support" data-reveal>
+            <div className="section-header">
+              <p className="eyebrow-text">{copy.donationEyebrow}</p>
+              <h2>{copy.donationTitle}</h2>
+              <p>{copy.donationIntro}</p>
+            </div>
+
+            <div className="donation-card" data-reveal>
+              <div className="donation-qr-container">
+                <img 
+                  src="/media/revolut-qr-hq.png" 
+                  alt={copy.donationQrAlt} 
+                  className="donation-qr-image"
+                  loading="lazy"
+                />
+                <div className="donation-copy">
+                  <strong>{copy.donationQrTitle}</strong>
+                  <p>{copy.donationQrText}</p>
+                  <span className="donation-username">{copy.donationUsername}</span>
+                </div>
+              </div>
+            </div>
+
+            {/* Google Ad after donation section */}
+            <div className="ad-slot" aria-label="Advertisement" role="complementary">
+              <span className="ad-slot-label">Ad</span>
+              <ins className="adsbygoogle" style={{ display: 'block' }}
+                data-ad-client="ca-pub-XXXXXXXXXXXXXXXX"
+                data-ad-slot="XXXXXXXXXX"
+                data-ad-format="auto" data-full-width-responsive="true" />
+            </div>
+          </section>
+        ) : null}
 
           </>
         ) : null}

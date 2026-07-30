@@ -90,8 +90,14 @@ export type EventRegistration = {
   name: string
   age: string
   gender: string
+  goal: string          // casual | dating | serious | marriage
+  ageMin: string        // preferred partner min age
+  ageMax: string        // preferred partner max age
   interests: string
-  personality: string
+  personality: string   // romantic | adventurous | intellectual | creative | spontaneous
+  communication: string // expressive | reserved | analytical | empathetic
+  lifestyle: string     // active | moderate | homebody
+  values: string        // family | career | adventure | creativity | spirituality | security
   lookingFor: string
   rating: number
   registeredAt: string
