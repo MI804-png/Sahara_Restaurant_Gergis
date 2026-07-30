@@ -75,6 +75,22 @@ export type LocaleContent = {
   donationQrText: string
   donationQrAlt: string
   donationUsername: string
+  offersEyebrow: string
+  offersTitle: string
+  offersIntro: string
+  offerSpecialSuffix: string
+  offerInclTax: string
+  offerProduct: string
+  offerClients: string
+  offerUnlimited: string
+  offerLeft: string
+  offerStatusLive: string
+  offerStatusScheduled: string
+  offerStatusSoldOut: string
+  offerStatusExpired: string
+  offerStatusDisabled: string
+  offersEmpty: string
+  offersEmptyDesc: string
 }
 
 export const localeOrder: Locale[] = ['hu', 'en', 'ar']
@@ -198,6 +214,32 @@ export const content: Record<Locale, LocaleContent> = {
     qrTitle: 'QR-kód megnyitása térképen',
     qrText: 'Szkenneld és nyisd meg közvetlenül a Google Maps helyszínt.',
     qrAlt: 'QR-kód a Sahara Restaurant Google Maps helyéhez',
+    donationEyebrow: 'Támogatás',
+    donationTitle: 'Támogassa étlapfejlesztésünket és szolgáltatásaink bővítését',
+    donationIntro:
+      'Az Ön nagylelkű támogatása segít nekünk új ételek bevezetésében, szolgáltatásaink javításában és vendégélményünk fejlesztésében. Minden hozzájárulást hálásan fogadunk!',
+    donationQrTitle: 'Revolut QR kód szkennelése',
+    donationQrText: 'Nyissa meg a Revolut alkalmazást és szkennelje be a QR-kódot azonnali átutaláshoz. Felhasználónév: @ghrg586a',
+    donationQrAlt: 'Revolut QR kód a Sahara Restaurant támogatásához',
+    donationUsername: '@ghrg586a',
+    offersEyebrow: 'Ajánlatok',
+    offersTitle: 'Időzített kedvezmények ügyfélkorláttal és egyértelmű időablakok.',
+    offersIntro:
+      'Minden ajánlat egy adott terméket céloz meg, százalékos kedvezményt alkalmazhat, korlátozhatja az ügyfelek számát, és csak kiválasztott dátum vagy napi időablak alatt futhat.',
+    offerSpecialSuffix: 'különleges',
+    offerInclTax: 'Áfával:',
+    offerProduct: 'Termék',
+    offerClients: 'Ügyfelek',
+    offerUnlimited: 'Korlátlan',
+    offerLeft: 'maradt',
+    offerStatusLive: 'Élő most',
+    offerStatusScheduled: 'Ütemezett',
+    offerStatusSoldOut: 'Ügyfélkorlát elérve',
+    offerStatusExpired: 'Lejárt',
+    offerStatusDisabled: 'Letiltva',
+    offersEmpty: 'Még nincsenek ajánlatok beállítva.',
+    offersEmptyDesc:
+      'Az admin közzétehet termékkedvezményeket kezdő és záró dátumokkal, napi órákkal és ügyfélkorlátokkal az admin oldalról.',
   },
   en: {
     browserTitle: 'Sahara Restaurant | Hungary',
@@ -325,14 +367,24 @@ export const content: Record<Locale, LocaleContent> = {
     donationQrText: 'Open the Revolut app and scan the QR code for instant transfer. Username: @ghrg586a',
     donationQrAlt: 'Revolut QR code for supporting Sahara Restaurant',
     donationUsername: '@ghrg586a',
-    donationEyebrow: 'Támogatás',
-    donationTitle: 'Támogassa étlapfejlesztésünket és szolgáltatásaink bővítését',
-    donationIntro:
-      'Az Ön nagylelkű támogatása segít nekünk új ételek bevezetésében, szolgáltatásaink javításában és vendégélményünk fejlesztésében. Minden hozzájárulást hálásan fogadunk!',
-    donationQrTitle: 'Revolut QR kód szkennelése',
-    donationQrText: 'Nyissa meg a Revolut alkalmazást és szkennelje be a QR-kódot azonnali átutaláshoz. Felhasználónév: @ghrg586a',
-    donationQrAlt: 'Revolut QR kód a Sahara Restaurant támogatásához',
-    donationUsername: '@ghrg586a',
+    offersEyebrow: 'Offer board',
+    offersTitle: 'Timed discounts with client limits and clear schedule windows.',
+    offersIntro:
+      'Every offer can target a specific product, apply a percentage discount, limit the number of clients, and run only during selected date or daily time windows.',
+    offerSpecialSuffix: 'special',
+    offerInclTax: 'Incl. tax:',
+    offerProduct: 'Product',
+    offerClients: 'Clients',
+    offerUnlimited: 'Unlimited',
+    offerLeft: 'left',
+    offerStatusLive: 'Live now',
+    offerStatusScheduled: 'Scheduled',
+    offerStatusSoldOut: 'Client limit reached',
+    offerStatusExpired: 'Expired',
+    offerStatusDisabled: 'Disabled',
+    offersEmpty: 'No offers are configured yet.',
+    offersEmptyDesc:
+      'The admin can publish product discounts with start and end dates, daily hours, and client limits from the admin page.',
   },
   ar: {
     browserTitle: 'Sahara Restaurant | Hungary',
@@ -460,5 +512,23 @@ export const content: Record<Locale, LocaleContent> = {
     donationQrText: 'افتح تطبيق Revolut وامسح رمز QR للتحويل الفوري. اسم المستخدم: @ghrg586a',
     donationQrAlt: 'رمز Revolut QR لدعم مطعم Sahara',
     donationUsername: '@ghrg586a',
+    offersEyebrow: 'لوحة العروض',
+    offersTitle: 'خصومات مؤقتة بحدود العملاء ونوافذ جدولة واضحة.',
+    offersIntro:
+      'كل عرض يمكن أن يستهدف منتجًا محددًا، ويطبق خصمًا بالنسبة المئوية، ويحدد عدد العملاء، ويعمل فقط خلال تواريخ أو نوافذ زمنية يومية محددة.',
+    offerSpecialSuffix: 'خاص',
+    offerInclTax: 'شامل الضريبة:',
+    offerProduct: 'المنتج',
+    offerClients: 'العملاء',
+    offerUnlimited: 'غير محدود',
+    offerLeft: 'متبقي',
+    offerStatusLive: 'مباشر الآن',
+    offerStatusScheduled: 'مجدول',
+    offerStatusSoldOut: 'تم الوصول لحد العملاء',
+    offerStatusExpired: 'منتهي',
+    offerStatusDisabled: 'معطل',
+    offersEmpty: 'لم يتم تكوين أي عروض بعد.',
+    offersEmptyDesc:
+      'يمكن للمسؤول نشر خصومات المنتجات مع تواريخ البدء والانتهاء، والساعات اليومية، وحدود العملاء من صفحة المسؤول.',
   },
 }

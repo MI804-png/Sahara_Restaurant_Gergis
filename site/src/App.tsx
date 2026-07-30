@@ -291,24 +291,24 @@ function formatTimeWindow(locale: Locale, start: string, end: string) {
   return null
 }
 
-function getOfferStatusLabel(status: OfferStatus) {
+function getOfferStatusLabel(locale: Locale, copy: LocaleContent, status: OfferStatus) {
   if (status === 'live') {
-    return 'Live now'
+    return copy.offerStatusLive
   }
 
   if (status === 'scheduled') {
-    return 'Scheduled'
+    return copy.offerStatusScheduled
   }
 
   if (status === 'sold-out') {
-    return 'Client limit reached'
+    return copy.offerStatusSoldOut
   }
 
   if (status === 'expired') {
-    return 'Expired'
+    return copy.offerStatusExpired
   }
 
-  return 'Disabled'
+  return copy.offerStatusDisabled
 }
 
 function readFileAsDataUrl(file: File) {
@@ -1731,12 +1731,9 @@ function App() {
 
         <section className="panel-section offers-panel" id="offers" data-reveal>
           <div className="section-header compact">
-            <p className="eyebrow-text">Offer board</p>
-            <h2>Timed discounts with client limits and clear schedule windows.</h2>
-            <p>
-              Every offer can target a specific product, apply a percentage discount, limit the
-              number of clients, and run only during selected date or daily time windows.
-            </p>
+            <p className="eyebrow-text">{copy.offersEyebrow}</p>
+            <h2>{copy.offersTitle}</h2>
+            <p>{copy.offersIntro}</p>
           </div>
 
           <div className="offer-showcase-grid">
@@ -1753,9 +1750,9 @@ function App() {
                   >
                     <div className="offer-card-head">
                       <span className={`offer-status-pill status-${card.status}`}>
-                        {getOfferStatusLabel(card.status)}
+                        {getOfferStatusLabel(locale, copy, card.status)}
                       </span>
-                      <strong>{card.offer.title || `${card.productName} special`}</strong>
+                      <strong>{card.offer.title || `${card.productName} ${copy.offerSpecialSuffix}`}</strong>
                       <small>{card.sectionTitle}</small>
                     </div>
 
@@ -1765,22 +1762,22 @@ function App() {
                       <small>-{card.offer.discountPercent}%</small>
                       {taxEnabled ? (
                         <small>
-                          Incl. tax: {hufFormatter.format(Math.round(card.discountedPriceHuf * (1 + taxPercent / 100)))} HUF
+                          {copy.offerInclTax} {hufFormatter.format(Math.round(card.discountedPriceHuf * (1 + taxPercent / 100)))} HUF
                         </small>
                       ) : null}
                     </div>
 
                     <div className="offer-meta-grid">
                       <div>
-                        <span>Product</span>
+                        <span>{copy.offerProduct}</span>
                         <strong>{card.productName}</strong>
                       </div>
                       <div>
-                        <span>Clients</span>
+                        <span>{copy.offerClients}</span>
                         <strong>
                           {card.remainingClients === null
-                            ? 'Unlimited'
-                            : `${card.remainingClients} left`}
+                            ? copy.offerUnlimited
+                            : `${card.remainingClients} ${copy.offerLeft}`}
                         </strong>
                       </div>
                     </div>
@@ -1797,11 +1794,8 @@ function App() {
               })
             ) : (
               <article className="offer-empty-card" data-reveal>
-                <strong>No offers are configured yet.</strong>
-                <p>
-                  The admin can publish product discounts with start and end dates, daily hours,
-                  and client limits from the admin page.
-                </p>
+                <strong>{copy.offersEmpty}</strong>
+                <p>{copy.offersEmptyDesc}</p>
               </article>
             )}
           </div>
@@ -2706,7 +2700,7 @@ function App() {
                       <div className="admin-inline-head offer-editor-head">
                         <div>
                           <h4>{offer.title || productMap.get(offer.itemId)?.itemName || 'New offer'}</h4>
-                          <span>{getOfferStatusLabel(getOfferStatus(offer, now))}</span>
+                          <span>{getOfferStatusLabel(locale, copy, getOfferStatus(offer, now))}</span>
                         </div>
                         <button
                           type="button"
