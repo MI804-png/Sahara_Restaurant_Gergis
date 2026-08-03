@@ -2028,7 +2028,7 @@ function App() {
             <div className="donation-card" data-reveal>
               <div className="donation-qr-container">
                 <img 
-                  src="/media/revolut-qr-hq.png" 
+                  src="/media/revolut-payment-qr.png" 
                   alt={copy.donationQrAlt} 
                   className="donation-qr-image"
                   loading="lazy"
@@ -3267,7 +3267,7 @@ function App() {
             </a>
 
             <div className="qr-card qr-card-revolut">
-              <img src="/media/revolut-qr-hq.png" alt={copy.donationQrAlt} loading="lazy" />
+              <img src="/media/revolut-payment-qr.png" alt={copy.donationQrAlt} loading="lazy" />
               <div className="qr-copy">
                 <strong>{copy.donationQrTitle}</strong>
                 <span>{copy.donationUsername}</span>
