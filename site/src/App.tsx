@@ -3344,6 +3344,14 @@ function App() {
                 <span>{copy.donationUsername}</span>
               </div>
             </div>
+
+            <div className="qr-card qr-card-otp">
+              <img src="/media/otp-payment-qr.jpg" alt={copy.otpPaymentQrAlt} loading="lazy" />
+              <div className="qr-copy">
+                <strong>{copy.otpPaymentQrTitle}</strong>
+                <span>{copy.otpPaymentBankDetails}</span>
+              </div>
+            </div>
           </div>
         </div>
       </footer>
