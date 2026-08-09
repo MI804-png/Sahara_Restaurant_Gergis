@@ -39,6 +39,7 @@ const restaurantName = 'Sahara Restaurant'
 const defaultMapsSearchUrl =
   'https://www.google.com/maps?q=47.48818588256836,19.097597122192383&z=17&hl=en'
 const visitSessionKey = 'sahara-visit-tracked-v1'
+const cookieConsentKey = 'sahara-cookie-consent-v1'
 const DAY_LABELS: Record<DayKey, Record<'hu' | 'en' | 'ar', string>> = {
   monday:    { hu: 'Hétfő',     en: 'Monday',    ar: 'الاثنين'  },
   tuesday:   { hu: 'Kedd',      en: 'Tuesday',   ar: 'الثلاثاء' },
@@ -499,6 +500,9 @@ function App() {
   const [now, setNow] = useState(() => new Date())
   // Announcement
   const [announcementDismissed, setAnnouncementDismissed] = useState(false)
+  // Cookie consent
+  const [cookieConsentShown, setCookieConsentShown] = useState(false)
+  const [cookieConsentAccepted, setCookieConsentAccepted] = useState<boolean | null>(null)
   // Blind Date Night event
   const [showEventModal, setShowEventModal] = useState(false)
   const [eventForm, setEventForm] = useState({
@@ -621,6 +625,37 @@ function App() {
     document.documentElement.dir = copy.dir
     document.title = isAdminRoute ? 'Sahara Restaurant Admin' : copy.browserTitle
   }, [copy.browserTitle, copy.dir, isAdminRoute, locale])
+
+  useEffect(() => {
+    // Check cookie consent on load
+    const consent = localStorage.getItem(cookieConsentKey)
+    if (consent === 'accepted') {
+      setCookieConsentAccepted(true)
+      setCookieConsentShown(false)
+    } else if (consent === 'declined') {
+      setCookieConsentAccepted(false)
+      setCookieConsentShown(false)
+    } else {
+      // Show banner after 2 seconds if no consent stored
+      const timer = setTimeout(() => {
+        setCookieConsentShown(true)
+      }, 2000)
+      return () => clearTimeout(timer)
+    }
+  }, [])
+
+  const handleCookieConsent = (accepted: boolean) => {
+    setCookieConsentAccepted(accepted)
+    setCookieConsentShown(false)
+    localStorage.setItem(cookieConsentKey, accepted ? 'accepted' : 'declined')
+    
+    if (accepted) {
+      // Set a cookie to track consent
+      document.cookie = `sahara_consent=accepted; max-age=${60 * 60 * 24 * 365}; path=/; SameSite=Lax`
+      // Store user preferences
+      document.cookie = `sahara_locale=${locale}; max-age=${60 * 60 * 24 * 365}; path=/; SameSite=Lax`
+    }
+  }
 
   useEffect(() => {
     const handlePageShow = () => {
@@ -2042,6 +2077,42 @@ function App() {
             </div>
 
             {/* Google Ad after donation section */}
+            <div className="ad-slot" aria-label="Advertisement" role="complementary">
+              <span className="ad-slot-label">Ad</span>
+              <ins className="adsbygoogle" style={{ display: 'block' }}
+                data-ad-client="ca-pub-XXXXXXXXXXXXXXXX"
+                data-ad-slot="XXXXXXXXXX"
+                data-ad-format="auto" data-full-width-responsive="true" />
+            </div>
+          </section>
+        ) : null}
+
+        {/* ── OTP Bank Payment section ────────────────────────── */}
+        {!isAdminRoute ? (
+          <section className="panel-section donation-panel" id="otp-payment" data-reveal>
+            <div className="section-header">
+              <p className="eyebrow-text">{copy.otpPaymentEyebrow}</p>
+              <h2>{copy.otpPaymentTitle}</h2>
+              <p>{copy.otpPaymentIntro}</p>
+            </div>
+
+            <div className="donation-card" data-reveal>
+              <div className="donation-qr-container">
+                <img 
+                  src="/media/otp-payment-qr.jpg" 
+                  alt={copy.otpPaymentQrAlt} 
+                  className="donation-qr-image"
+                  loading="lazy"
+                />
+                <div className="donation-copy">
+                  <strong>{copy.otpPaymentQrTitle}</strong>
+                  <p>{copy.otpPaymentQrText}</p>
+                  <span className="donation-username">{copy.otpPaymentBankDetails}</span>
+                </div>
+              </div>
+            </div>
+
+            {/* Google Ad after OTP payment section */}
             <div className="ad-slot" aria-label="Advertisement" role="complementary">
               <span className="ad-slot-label">Ad</span>
               <ins className="adsbygoogle" style={{ display: 'block' }}
@@ -3542,6 +3613,32 @@ function App() {
         </div>
         )
       })() : null}
+
+      {/* ── Cookie Consent Banner ─────────────────────── */}
+      {cookieConsentShown && !isAdminRoute ? (
+        <div className="cookie-consent-banner" role="dialog" aria-live="polite" aria-label={copy.cookieConsentTitle}>
+          <div className="cookie-consent-content">
+            <strong>{copy.cookieConsentTitle}</strong>
+            <p>{copy.cookieConsentText}</p>
+            <div className="cookie-consent-actions">
+              <button
+                type="button"
+                className="button primary"
+                onClick={() => handleCookieConsent(true)}
+              >
+                {copy.cookieConsentAccept}
+              </button>
+              <button
+                type="button"
+                className="button secondary"
+                onClick={() => handleCookieConsent(false)}
+              >
+                {copy.cookieConsentDecline}
+              </button>
+            </div>
+          </div>
+        </div>
+      ) : null}
     </div>
   )
 }

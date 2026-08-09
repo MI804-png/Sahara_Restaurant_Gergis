@@ -75,6 +75,13 @@ export type LocaleContent = {
   donationQrText: string
   donationQrAlt: string
   donationUsername: string
+  otpPaymentEyebrow: string
+  otpPaymentTitle: string
+  otpPaymentIntro: string
+  otpPaymentQrTitle: string
+  otpPaymentQrText: string
+  otpPaymentQrAlt: string
+  otpPaymentBankDetails: string
   offersEyebrow: string
   offersTitle: string
   offersIntro: string
@@ -91,6 +98,10 @@ export type LocaleContent = {
   offerStatusDisabled: string
   offersEmpty: string
   offersEmptyDesc: string
+  cookieConsentTitle: string
+  cookieConsentText: string
+  cookieConsentAccept: string
+  cookieConsentDecline: string
 }
 
 export const localeOrder: Locale[] = ['hu', 'en', 'ar']
@@ -222,6 +233,14 @@ export const content: Record<Locale, LocaleContent> = {
     donationQrText: 'Nyissa meg a Revolut alkalmazást és szkennelje be a QR-kódot azonnali átutaláshoz. Felhasználónév: girgis86',
     donationQrAlt: 'Revolut QR kód a Sahara Restaurant támogatásához',
     donationUsername: 'girgis86',
+    otpPaymentEyebrow: 'OTP Bank Fizetés',
+    otpPaymentTitle: 'Fizessen biztonságosan OTP Bank átutalással',
+    otpPaymentIntro:
+      'Fizethet közvetlenül OTP Bank átutalással. Szkennelhe be a QR-kódot a banki alkalmazásában az azonnali fizetéshez.',
+    otpPaymentQrTitle: 'OTP Bank QR kód',
+    otpPaymentQrText: 'Nyissa meg az OTP Bank alkalmazást és szkennelje be ezt a QR-kódot az azonnali átutaláshoz',
+    otpPaymentQrAlt: 'OTP Bank fizetési QR kód a Sahara Restaurant részére',
+    otpPaymentBankDetails: 'Számlatulajdonos: SLWANS GIRGIS KARMY AMIN | Számlaszám: 11710008-24108333',
     offersEyebrow: 'Ajánlatok',
     offersTitle: 'Időzített kedvezmények ügyfélkorláttal és egyértelmű időablakok.',
     offersIntro:
@@ -240,6 +259,10 @@ export const content: Record<Locale, LocaleContent> = {
     offersEmpty: 'Még nincsenek ajánlatok beállítva.',
     offersEmptyDesc:
       'Az admin közzétehet termékkedvezményeket kezdő és záró dátumokkal, napi órákkal és ügyfélkorlátokkal az admin oldalról.',
+    cookieConsentTitle: 'Sütihasználat',
+    cookieConsentText: 'Ez a weboldal sütiket használ a jobb felhasználói élmény érdekében. A folytatással elfogadja a sütik használatát.',
+    cookieConsentAccept: 'Elfogadom',
+    cookieConsentDecline: 'Elutasítom',
   },
   en: {
     browserTitle: 'Sahara Restaurant | Hungary',
@@ -367,6 +390,14 @@ export const content: Record<Locale, LocaleContent> = {
     donationQrText: 'Open the Revolut app and scan the QR code for instant transfer. Username: girgis86',
     donationQrAlt: 'Revolut QR code for supporting Sahara Restaurant',
     donationUsername: 'girgis86',
+    otpPaymentEyebrow: 'OTP Bank Payment',
+    otpPaymentTitle: 'Pay securely via OTP Bank transfer',
+    otpPaymentIntro:
+      'You can pay directly via OTP Bank transfer. Scan the QR code in your banking app for instant payment.',
+    otpPaymentQrTitle: 'OTP Bank QR Code',
+    otpPaymentQrText: 'Open your OTP Bank app and scan this QR code for instant transfer',
+    otpPaymentQrAlt: 'OTP Bank payment QR code for Sahara Restaurant',
+    otpPaymentBankDetails: 'Account holder: SLWANS GIRGIS KARMY AMIN | Account number: 11710008-24108333',
     offersEyebrow: 'Offer board',
     offersTitle: 'Timed discounts with client limits and clear schedule windows.',
     offersIntro:
@@ -385,6 +416,10 @@ export const content: Record<Locale, LocaleContent> = {
     offersEmpty: 'No offers are configured yet.',
     offersEmptyDesc:
       'The admin can publish product discounts with start and end dates, daily hours, and client limits from the admin page.',
+    cookieConsentTitle: 'Cookie Usage',
+    cookieConsentText: 'This website uses cookies to enhance your browsing experience. By continuing, you accept our use of cookies.',
+    cookieConsentAccept: 'Accept',
+    cookieConsentDecline: 'Decline',
   },
   ar: {
     browserTitle: 'Sahara Restaurant | Hungary',
@@ -512,6 +547,14 @@ export const content: Record<Locale, LocaleContent> = {
     donationQrText: 'افتح تطبيق Revolut وامسح رمز QR للتحويل الفوري. اسم المستخدم: girgis86',
     donationQrAlt: 'رمز Revolut QR لدعم مطعم Sahara',
     donationUsername: 'girgis86',
+    otpPaymentEyebrow: 'دفع OTP Bank',
+    otpPaymentTitle: 'ادفع بأمان عبر تحويل OTP Bank',
+    otpPaymentIntro:
+      'يمكنك الدفع مباشرة عبر تحويل OTP Bank. امسح رمز QR في تطبيق البنك للدفع الفوري.',
+    otpPaymentQrTitle: 'رمز OTP Bank QR',
+    otpPaymentQrText: 'افتح تطبيق OTP Bank وامسح رمز QR هذا للتحويل الفوري',
+    otpPaymentQrAlt: 'رمز دفع OTP Bank لمطعم Sahara',
+    otpPaymentBankDetails: 'صاحب الحساب: SLWANS GIRGIS KARMY AMIN | رقم الحساب: 11710008-24108333',
     offersEyebrow: 'لوحة العروض',
     offersTitle: 'خصومات مؤقتة بحدود العملاء ونوافذ جدولة واضحة.',
     offersIntro:
@@ -530,5 +573,9 @@ export const content: Record<Locale, LocaleContent> = {
     offersEmpty: 'لم يتم تكوين أي عروض بعد.',
     offersEmptyDesc:
       'يمكن للمسؤول نشر خصومات المنتجات مع تواريخ البدء والانتهاء، والساعات اليومية، وحدود العملاء من صفحة المسؤول.',
+    cookieConsentTitle: 'استخدام ملفات تعريف الارتباط',
+    cookieConsentText: 'يستخدم هذا الموقع ملفات تعريف الارتباط لتحسين تجربة التصفح. بالمتابعة، فإنك توافق على استخدامنا لملفات تعريف الارتباط.',
+    cookieConsentAccept: 'قبول',
+    cookieConsentDecline: 'رفض',
   },
 }
