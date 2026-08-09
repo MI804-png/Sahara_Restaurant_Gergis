@@ -3352,6 +3352,14 @@ function App() {
                 <span>{copy.otpPaymentBankDetails}</span>
               </div>
             </div>
+
+            <div className="qr-card qr-card-international">
+              <img src="/media/international-payment-qr.png" alt={copy.internationalPaymentQrAlt} loading="lazy" />
+              <div className="qr-copy">
+                <strong>{copy.internationalPaymentQrTitle}</strong>
+                <span>{copy.internationalPaymentMethods}</span>
+              </div>
+            </div>
           </div>
         </div>
       </footer>
