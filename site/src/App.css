@@ -1540,14 +1540,7 @@
 
 @media (min-width: 960px) {
   .footer-qr-grid {
-    grid-template-columns: repeat(3, 1fr);
-    gap: 20px;
-  }
-}
-
-@media (min-width: 1200px) {
-  .footer-qr-grid {
-    grid-template-columns: repeat(5, 1fr);
+    grid-template-columns: repeat(4, 1fr);
     gap: 20px;
   }
 }
@@ -1575,12 +1568,6 @@
 .qr-card-otp {
   background: linear-gradient(135deg, rgba(240, 250, 255, 0.95), rgba(230, 245, 255, 0.95));
   border-color: rgba(41, 128, 185, 0.18);
-}
-
-.qr-card-international {
-  background: linear-gradient(135deg, rgba(245, 245, 255, 0.95), rgba(235, 235, 255, 0.95));
-  border-color: rgba(88, 86, 214, 0.18);
-  box-shadow: 0 16px 36px rgba(88, 86, 214, 0.12);
 }
 
 .qr-card-paypal {

@@ -3353,14 +3353,6 @@ function App() {
               </div>
             </div>
 
-            <div className="qr-card qr-card-international">
-              <img src="/media/international-payment-qr.png" alt={copy.internationalPaymentQrAlt} loading="lazy" />
-              <div className="qr-copy">
-                <strong>{copy.internationalPaymentQrTitle}</strong>
-                <span>{copy.internationalPaymentMethods}</span>
-              </div>
-            </div>
-
             <div className="qr-card qr-card-paypal">
               <img src="/media/paypal-payment-qr.png" alt={copy.paypalPaymentQrAlt} loading="lazy" />
               <div className="qr-copy">

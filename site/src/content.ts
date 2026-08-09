@@ -241,14 +241,6 @@ export const content: Record<Locale, LocaleContent> = {
     otpPaymentQrText: 'Nyissa meg az OTP Bank alkalmazást és szkennelje be ezt a QR-kódot az azonnali átutaláshoz',
     otpPaymentQrAlt: 'OTP Bank fizetési QR kód a Sahara Restaurant részére',
     otpPaymentBankDetails: 'Számlatulajdonos: SLWANS GIRGIS KARMY AMIN | Számlaszám: 11710008-24108333',
-    internationalPaymentEyebrow: 'Nemzetközi Fizetés',
-    internationalPaymentTitle: 'Fizessen bárhonnan a világból bármilyen kártyával',
-    internationalPaymentIntro:
-      'Fogadunk el Visa, Mastercard, Amex és minden nemzetközi bankkártyát. Szkennelhe be a QR-kódot biztonságos fizetéshez.',
-    internationalPaymentQrTitle: 'Nemzetközi Fizetési QR Kód',
-    internationalPaymentQrText: 'Szkennelje be mobileszközével az azonnali fizetéshez',
-    internationalPaymentQrAlt: 'Nemzetközi fizetési QR kód a Sahara Restaurant részére',
-    internationalPaymentMethods: 'Elfogadott fizetési módok világszerte',
     paypalPaymentEyebrow: 'PayPal Fizetés',
     paypalPaymentTitle: 'Fizessen biztonságosan PayPal-lal',
     paypalPaymentIntro:
@@ -414,14 +406,6 @@ export const content: Record<Locale, LocaleContent> = {
     otpPaymentQrText: 'Open your OTP Bank app and scan this QR code for instant transfer',
     otpPaymentQrAlt: 'OTP Bank payment QR code for Sahara Restaurant',
     otpPaymentBankDetails: 'Account holder: SLWANS GIRGIS KARMY AMIN | Account number: 11710008-24108333',
-    internationalPaymentEyebrow: 'International Payment',
-    internationalPaymentTitle: 'Pay from anywhere in the world with any card',
-    internationalPaymentIntro:
-      'We accept Visa, Mastercard, Amex, and all international bank cards. Scan the QR code for secure payment.',
-    internationalPaymentQrTitle: 'International Payment QR Code',
-    internationalPaymentQrText: 'Scan with your mobile device for instant payment',
-    internationalPaymentQrAlt: 'International payment QR code for Sahara Restaurant',
-    internationalPaymentMethods: 'Accepted payment methods worldwide',
     paypalPaymentEyebrow: 'PayPal Payment',
     paypalPaymentTitle: 'Pay securely with PayPal',
     paypalPaymentIntro:
@@ -587,14 +571,6 @@ export const content: Record<Locale, LocaleContent> = {
     otpPaymentQrText: 'افتح تطبيق OTP Bank وامسح رمز QR هذا للتحويل الفوري',
     otpPaymentQrAlt: 'رمز دفع OTP Bank لمطعم Sahara',
     otpPaymentBankDetails: 'صاحب الحساب: SLWANS GIRGIS KARMY AMIN | رقم الحساب: 11710008-24108333',
-    internationalPaymentEyebrow: 'الدفع الدولي',
-    internationalPaymentTitle: 'ادفع من أي مكان في العالم بأي بطاقة',
-    internationalPaymentIntro:
-      'نقبل Visa و Mastercard و Amex وجميع البطاقات المصرفية الدولية. امسح رمز QR للدفع الآمن.',
-    internationalPaymentQrTitle: 'رمز QR للدفع الدولي',
-    internationalPaymentQrText: 'امسح بهاتفك المحمول للدفع الفوري',
-    internationalPaymentQrAlt: 'رمز QR للدفع الدولي لمطعم Sahara',
-    internationalPaymentMethods: 'طرق الدفع المقبولة في جميع أنحاء العالم',
     paypalPaymentEyebrow: 'الدفع عبر PayPal',
     paypalPaymentTitle: 'ادفع بأمان عبر PayPal',
     paypalPaymentIntro:
