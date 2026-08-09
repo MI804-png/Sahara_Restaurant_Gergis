@@ -249,6 +249,14 @@ export const content: Record<Locale, LocaleContent> = {
     internationalPaymentQrText: 'Szkennelje be mobileszközével az azonnali fizetéshez',
     internationalPaymentQrAlt: 'Nemzetközi fizetési QR kód a Sahara Restaurant részére',
     internationalPaymentMethods: 'Elfogadott fizetési módok világszerte',
+    paypalPaymentEyebrow: 'PayPal Fizetés',
+    paypalPaymentTitle: 'Fizessen biztonságosan PayPal-lal',
+    paypalPaymentIntro:
+      'Fogadunk PayPal fizetéseket világszerte. Nem szükséges PayPal fiók - használhat bármilyen bankkártyát.',
+    paypalPaymentQrTitle: 'PayPal QR Kód',
+    paypalPaymentQrText: 'Szkennelje be PayPal fizetéshez',
+    paypalPaymentQrAlt: 'PayPal fizetési QR kód a Sahara Restaurant részére',
+    paypalPaymentMethod: 'PayPal - Elfogadott világszerte',
     offersEyebrow: 'Ajánlatok',
     offersTitle: 'Időzített kedvezmények ügyfélkorláttal és egyértelmű időablakok.',
     offersIntro:
@@ -414,6 +422,14 @@ export const content: Record<Locale, LocaleContent> = {
     internationalPaymentQrText: 'Scan with your mobile device for instant payment',
     internationalPaymentQrAlt: 'International payment QR code for Sahara Restaurant',
     internationalPaymentMethods: 'Accepted payment methods worldwide',
+    paypalPaymentEyebrow: 'PayPal Payment',
+    paypalPaymentTitle: 'Pay securely with PayPal',
+    paypalPaymentIntro:
+      'We accept PayPal payments worldwide. No PayPal account needed - use any bank card.',
+    paypalPaymentQrTitle: 'PayPal QR Code',
+    paypalPaymentQrText: 'Scan to pay with PayPal',
+    paypalPaymentQrAlt: 'PayPal payment QR code for Sahara Restaurant',
+    paypalPaymentMethod: 'PayPal - Accepted worldwide',
     offersEyebrow: 'Offer board',
     offersTitle: 'Timed discounts with client limits and clear schedule windows.',
     offersIntro:
@@ -579,6 +595,14 @@ export const content: Record<Locale, LocaleContent> = {
     internationalPaymentQrText: 'امسح بهاتفك المحمول للدفع الفوري',
     internationalPaymentQrAlt: 'رمز QR للدفع الدولي لمطعم Sahara',
     internationalPaymentMethods: 'طرق الدفع المقبولة في جميع أنحاء العالم',
+    paypalPaymentEyebrow: 'الدفع عبر PayPal',
+    paypalPaymentTitle: 'ادفع بأمان عبر PayPal',
+    paypalPaymentIntro:
+      'نقبل مدفوعات PayPal في جميع أنحاء العالم. لا حاجة لحساب PayPal - استخدم أي بطاقة مصرفية.',
+    paypalPaymentQrTitle: 'رمز PayPal QR',
+    paypalPaymentQrText: 'امسح للدفع عبر PayPal',
+    paypalPaymentQrAlt: 'رمز دفع PayPal لمطعم Sahara',
+    paypalPaymentMethod: 'PayPal - مقبول في جميع أنحاء العالم',
     offersEyebrow: 'لوحة العروض',
     offersTitle: 'خصومات مؤقتة بحدود العملاء ونوافذ جدولة واضحة.',
     offersIntro:
