@@ -700,7 +700,7 @@ http
         updatedAt: current.updatedAt,
         siteData: current.siteData,
         metrics: current.metrics,
-        eventRegistrations: [...current.eventRegistrations, registration],
+        eventRegistrations: [...(current.eventRegistrations || []), registration],
       }
 
       writeStoredRecord(record)
@@ -714,7 +714,7 @@ http
       }
 
       const current = readStoredRecord()
-      sendJson(response, 200, { ok: true, registrations: current.eventRegistrations })
+      sendJson(response, 200, { ok: true, registrations: current.eventRegistrations || [] })
       return
     }
 

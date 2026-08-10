@@ -1,641 +1,70 @@
 {
-  "updatedAt": "2026-07-23T18:53:56.443Z",
+  "updatedAt": "2026-08-10T00:55:45.249Z",
   "siteData": {
     "hours": {
-      "open": "08:00",
-      "close": "16:00"
+      "monday": {
+        "open": "08:00",
+        "close": "16:00",
+        "closed": false
+      },
+      "tuesday": {
+        "open": "08:00",
+        "close": "16:00",
+        "closed": false
+      },
+      "wednesday": {
+        "open": "08:00",
+        "close": "16:00",
+        "closed": false
+      },
+      "thursday": {
+        "open": "08:00",
+        "close": "16:00",
+        "closed": false
+      },
+      "friday": {
+        "open": "08:00",
+        "close": "16:00",
+        "closed": false
+      },
+      "saturday": {
+        "open": "10:00",
+        "close": "18:00",
+        "closed": false
+      },
+      "sunday": {
+        "open": "10:00",
+        "close": "18:00",
+        "closed": false
+      }
     },
     "business": {
       "locationLabel": "47.4881859, 19.0975971",
       "phoneNumber": "",
       "deliveryAvailable": false
     },
-    "menuSections": [
-      {
-        "id": "desszertek",
-        "title": "Desszertek",
-        "subtitle": "",
-        "items": [
-          {
-            "id": "brownie-1-db",
-            "name": "Brownie (1 db)",
-            "priceHuf": 600,
-            "details": ""
-          },
-          {
-            "id": "muffin-1-db",
-            "name": "Muffin (1 db)",
-            "priceHuf": 550,
-            "details": ""
-          }
-        ]
-      },
-      {
-        "id": "t-szt-k",
-        "title": "Tészták",
-        "subtitle": "",
-        "items": [
-          {
-            "id": "pomodoro",
-            "name": "Pomodoro",
-            "priceHuf": 1800,
-            "details": "paradicsom, bazsalikom, parmezán"
-          },
-          {
-            "id": "arrabbiata",
-            "name": "Arrabbiata",
-            "priceHuf": 1800,
-            "details": "csípős paradicsomszósz, fokhagymás tészta, parmezán"
-          },
-          {
-            "id": "carbonara",
-            "name": "Carbonara",
-            "priceHuf": 1900,
-            "details": "bacon, sonka, tojás, parmezán"
-          },
-          {
-            "id": "bolognese",
-            "name": "Bolognese",
-            "priceHuf": 2200,
-            "details": "paradicsom, marha, parmezán"
-          },
-          {
-            "id": "funghi",
-            "name": "Funghi",
-            "priceHuf": 2000,
-            "details": "válogatott erdei gomba, fehérboros, parmezán"
-          },
-          {
-            "id": "pasta-scampi",
-            "name": "Pasta scampi",
-            "priceHuf": 2600,
-            "details": "garnéla, paradicsom, parmezán"
-          },
-          {
-            "id": "frutti-di-mare",
-            "name": "Frutti di mare",
-            "priceHuf": 2600,
-            "details": "tintahal, garnéla, paradicsom"
-          },
-          {
-            "id": "napoletana",
-            "name": "Napoletana",
-            "priceHuf": 1800,
-            "details": "paradicsom, olívabogyó, parmezán"
-          },
-          {
-            "id": "lasagne-al-forno",
-            "name": "Lasagne al forno",
-            "priceHuf": 2200,
-            "details": "tésztalapok, besamel mártás, sajt, marhahús"
-          }
-        ]
-      },
-      {
-        "id": "v-laszthat-felt-tek",
-        "title": "Választható feltétek",
-        "subtitle": "",
-        "items": [
-          {
-            "id": "toj-s",
-            "name": "Tojás",
-            "priceHuf": 140,
-            "details": ""
-          },
-          {
-            "id": "gomba",
-            "name": "Gomba",
-            "priceHuf": 270,
-            "details": ""
-          },
-          {
-            "id": "sonka",
-            "name": "Sonka",
-            "priceHuf": 270,
-            "details": ""
-          },
-          {
-            "id": "bacon",
-            "name": "Bacon",
-            "priceHuf": 270,
-            "details": ""
-          },
-          {
-            "id": "parmez-n",
-            "name": "Parmezán",
-            "priceHuf": 390,
-            "details": ""
-          },
-          {
-            "id": "paradicsom",
-            "name": "Paradicsom",
-            "priceHuf": 410,
-            "details": ""
-          }
-        ]
-      },
-      {
-        "id": "borok",
-        "title": "Borok",
-        "subtitle": "1 dl",
-        "items": [
-          {
-            "id": "varga",
-            "name": "Varga",
-            "priceHuf": 350,
-            "details": ""
-          },
-          {
-            "id": "nyakas",
-            "name": "Nyakas",
-            "priceHuf": 470,
-            "details": ""
-          },
-          {
-            "id": "gere-vill-ny",
-            "name": "Gere Villány",
-            "priceHuf": 470,
-            "details": ""
-          },
-          {
-            "id": "vylyan",
-            "name": "Vylyan",
-            "priceHuf": 470,
-            "details": ""
-          },
-          {
-            "id": "juh-sz",
-            "name": "Juhász",
-            "priceHuf": 470,
-            "details": ""
-          },
-          {
-            "id": "tokaji-asz-3-puttonyos",
-            "name": "Tokaji aszú 3 puttonyos",
-            "priceHuf": 950,
-            "details": ""
-          },
-          {
-            "id": "tokaji-szamorodni",
-            "name": "Tokaji Szamorodni",
-            "priceHuf": 790,
-            "details": ""
-          }
-        ]
-      },
-      {
-        "id": "s-r-k",
-        "title": "Sörök",
-        "subtitle": "palackozott sörök",
-        "items": [
-          {
-            "id": "dreher-classic-0-5-l",
-            "name": "Dreher Classic 0,5 l",
-            "priceHuf": 950,
-            "details": ""
-          },
-          {
-            "id": "dreher-ipa-0-5-l",
-            "name": "Dreher IPA 0,5 l",
-            "priceHuf": 950,
-            "details": ""
-          },
-          {
-            "id": "dreher-meggy-0-5-l",
-            "name": "Dreher meggy 0,5 l",
-            "priceHuf": 950,
-            "details": ""
-          },
-          {
-            "id": "dreher-24-0-5-l",
-            "name": "Dreher 24 0,5 l",
-            "priceHuf": 950,
-            "details": ""
-          },
-          {
-            "id": "kozel-0-5-l",
-            "name": "Kozel 0,5 l",
-            "priceHuf": 890,
-            "details": ""
-          },
-          {
-            "id": "heineken-0-5-l",
-            "name": "Heineken 0,5 l",
-            "priceHuf": 950,
-            "details": ""
-          },
-          {
-            "id": "kingswood-cider",
-            "name": "Kingswood cider",
-            "priceHuf": 890,
-            "details": ""
-          },
-          {
-            "id": "somersby-cider-0-33-l",
-            "name": "Somersby cider 0,33 l",
-            "priceHuf": 890,
-            "details": ""
-          },
-          {
-            "id": "peroni-0-33-l",
-            "name": "Peroni 0,33 l",
-            "priceHuf": 790,
-            "details": ""
-          },
-          {
-            "id": "g-sser-citromos-0-33-l",
-            "name": "Gösser citromos 0,33 l",
-            "priceHuf": 750,
-            "details": ""
-          },
-          {
-            "id": "g-sser-0-citromos-0-33-l",
-            "name": "Gösser 0% citromos 0,33 l",
-            "priceHuf": 750,
-            "details": ""
-          },
-          {
-            "id": "g-sser-0-33-l",
-            "name": "Gösser 0,33 l",
-            "priceHuf": 750,
-            "details": ""
-          },
-          {
-            "id": "corona-0-33-l",
-            "name": "Corona 0,33 l",
-            "priceHuf": 1100,
-            "details": ""
-          },
-          {
-            "id": "asahi-super-dry-0-33-l",
-            "name": "Asahi Super Dry 0,33 l",
-            "priceHuf": 890,
-            "details": ""
-          }
-        ]
-      },
-      {
-        "id": "r-vid-italok",
-        "title": "Rövid italok",
-        "subtitle": "4 cl",
-        "items": [
-          {
-            "id": "martini-dry-bianco",
-            "name": "Martini (dry, bianco)",
-            "priceHuf": 400,
-            "details": ""
-          },
-          {
-            "id": "campari",
-            "name": "Campari",
-            "priceHuf": 490,
-            "details": ""
-          },
-          {
-            "id": "brandy",
-            "name": "Brandy",
-            "priceHuf": 1100,
-            "details": ""
-          },
-          {
-            "id": "vodka",
-            "name": "Vodka",
-            "priceHuf": 850,
-            "details": ""
-          },
-          {
-            "id": "gin",
-            "name": "Gin",
-            "priceHuf": 850,
-            "details": ""
-          },
-          {
-            "id": "whiskey",
-            "name": "Whiskey",
-            "priceHuf": 850,
-            "details": ""
-          }
-        ]
-      },
-      {
-        "id": "rostos-d-t-k",
-        "title": "Rostos üdítők",
-        "subtitle": "3 dl",
-        "items": [
-          {
-            "id": "rauch-100-juice-k-t-bbf-le",
-            "name": "Rauch 100% juice-k (többféle)",
-            "priceHuf": 180,
-            "details": ""
-          },
-          {
-            "id": "bravo-rostos-d-t-k-t-bbf-le",
-            "name": "Bravo rostos üdítők (többféle)",
-            "priceHuf": 170,
-            "details": ""
-          }
-        ]
-      },
-      {
-        "id": "sz-nsavas-d-t-k",
-        "title": "Szénsavas üdítők",
-        "subtitle": "0,33 l",
-        "items": [
-          {
-            "id": "coca-cola",
-            "name": "Coca-Cola",
-            "priceHuf": 750,
-            "details": ""
-          },
-          {
-            "id": "coca-cola-zero",
-            "name": "Coca-Cola Zero",
-            "priceHuf": 390,
-            "details": ""
-          },
-          {
-            "id": "tonic",
-            "name": "Tonic",
-            "priceHuf": 390,
-            "details": ""
-          },
-          {
-            "id": "sprite",
-            "name": "Sprite",
-            "priceHuf": 390,
-            "details": ""
-          },
-          {
-            "id": "gy-mb-r",
-            "name": "Gyömbér",
-            "priceHuf": 390,
-            "details": ""
-          },
-          {
-            "id": "fanta",
-            "name": "Fanta",
-            "priceHuf": 390,
-            "details": ""
-          }
-        ]
-      },
-      {
-        "id": "sv-nyvizek",
-        "title": "Ásványvizek",
-        "subtitle": "",
-        "items": [
-          {
-            "id": "theodora-0-33-l",
-            "name": "Theodora 0,33 l",
-            "priceHuf": 350,
-            "details": ""
-          },
-          {
-            "id": "naturaqua-0-33-l",
-            "name": "Naturaqua 0,33 l",
-            "priceHuf": 350,
-            "details": ""
-          }
-        ]
-      },
-      {
-        "id": "energiaitalok",
-        "title": "Energiaitalok",
-        "subtitle": "",
-        "items": [
-          {
-            "id": "red-bull",
-            "name": "Red Bull",
-            "priceHuf": 890,
-            "details": ""
-          },
-          {
-            "id": "hell",
-            "name": "Hell",
-            "priceHuf": 780,
-            "details": ""
-          }
-        ]
-      },
-      {
-        "id": "pizza",
-        "title": "Pizza",
-        "subtitle": "",
-        "items": [
-          {
-            "id": "pizza-margarita",
-            "name": "Margarita",
-            "priceHuf": 2500,
-            "details": ""
-          },
-          {
-            "id": "pizza-sonka",
-            "name": "Sonka",
-            "priceHuf": 3000,
-            "details": ""
-          },
-          {
-            "id": "pizza-szalami",
-            "name": "Szalami",
-            "priceHuf": 3000,
-            "details": ""
-          },
-          {
-            "id": "pizza-tonal",
-            "name": "Tonál",
-            "priceHuf": 3200,
-            "details": ""
-          }
-        ]
-      },
-      {
-        "id": "gyros",
-        "title": "Gyros",
-        "subtitle": "",
-        "items": [
-          {
-            "id": "gyros-pitta",
-            "name": "Pitta",
-            "priceHuf": 1500,
-            "details": ""
-          },
-          {
-            "id": "gyros-tortilla",
-            "name": "Tortilla",
-            "priceHuf": 1800,
-            "details": ""
-          },
-          {
-            "id": "gyros-kis-tal",
-            "name": "Kis tál",
-            "priceHuf": 2500,
-            "details": ""
-          },
-          {
-            "id": "gyros-nagy-tal",
-            "name": "Nagy tál",
-            "priceHuf": 3000,
-            "details": ""
-          }
-        ]
-      },
-      {
-        "id": "rantott-hus",
-        "title": "Rántott hús",
-        "subtitle": "",
-        "items": [
-          {
-            "id": "rantott-hus-kis-menu",
-            "name": "Kis menü",
-            "priceHuf": 2200,
-            "details": ""
-          },
-          {
-            "id": "rantott-hus-nagy-menu",
-            "name": "Nagy menü",
-            "priceHuf": 2800,
-            "details": ""
-          }
-        ]
-      },
-      {
-        "id": "rantott-sajt",
-        "title": "Rántott sajt",
-        "subtitle": "",
-        "items": [
-          {
-            "id": "rantott-sajt-kis-menu",
-            "name": "Kis menü",
-            "priceHuf": 2200,
-            "details": ""
-          },
-          {
-            "id": "rantott-sajt-nagy-menu",
-            "name": "Nagy menü",
-            "priceHuf": 2800,
-            "details": ""
-          }
-        ]
-      },
-      {
-        "id": "italok",
-        "title": "Italok",
-        "subtitle": "",
-        "items": [
-          {
-            "id": "coca-cola-classic-33ml",
-            "name": "Coca-Cola Classic 33ml",
-            "priceHuf": 500,
-            "details": ""
-          },
-          {
-            "id": "coca-cola-cherry-500ml",
-            "name": "Coca-Cola Cherry 500ml",
-            "priceHuf": 600,
-            "details": ""
-          },
-          {
-            "id": "sprite-italok",
-            "name": "Sprite",
-            "priceHuf": 350,
-            "details": ""
-          },
-          {
-            "id": "fanta-italok",
-            "name": "Fanta",
-            "priceHuf": 350,
-            "details": ""
-          },
-          {
-            "id": "ice-tea-lemon",
-            "name": "Ice Tea Lemon",
-            "priceHuf": 600,
-            "details": ""
-          },
-          {
-            "id": "ice-tea-peach",
-            "name": "Ice Tea Peach",
-            "priceHuf": 350,
-            "details": ""
-          },
-          {
-            "id": "water-normal",
-            "name": "Water (víz) - normál",
-            "priceHuf": 350,
-            "details": ""
-          },
-          {
-            "id": "water-gazos",
-            "name": "Water (víz) - gázos",
-            "priceHuf": 350,
-            "details": ""
-          },
-          {
-            "id": "espresso",
-            "name": "Espresso",
-            "priceHuf": 500,
-            "details": ""
-          }
-        ]
-      }
-    ],
-    "menuEvidenceImages": [
-      {
-        "id": "photo-01",
-        "src": "/photos/photo-01.jpg",
-        "timestamp": "Photo 01"
-      },
-      {
-        "id": "photo-02",
-        "src": "/photos/photo-02.jpg",
-        "timestamp": "Photo 02"
-      },
-      {
-        "id": "photo-03",
-        "src": "/photos/photo-03.jpg",
-        "timestamp": "Photo 03"
-      }
-    ],
-    "galleryImages": [
-      {
-        "id": "gallery-1",
-        "src": "/photos/photo-01.jpg"
-      },
-      {
-        "id": "gallery-2",
-        "src": "/photos/photo-02.jpg"
-      },
-      {
-        "id": "gallery-3",
-        "src": "/photos/photo-03.jpg"
-      },
-      {
-        "id": "gallery-4",
-        "src": "/photos/photo-04.jpg"
-      },
-      {
-        "id": "gallery-5",
-        "src": "/photos/photo-05.jpg"
-      },
-      {
-        "id": "gallery-6",
-        "src": "/photos/photo-06.jpg"
-      },
-      {
-        "id": "gallery-7",
-        "src": "/photos/photo-07.jpg"
-      },
-      {
-        "id": "gallery-8",
-        "src": "/photos/photo-08.jpg"
-      },
-      {
-        "id": "gallery-9",
-        "src": "/photos/photo-09.jpg"
-      }
-    ],
+    "pricing": {
+      "taxEnabled": false,
+      "taxPercent": 0
+    },
+    "menuSections": [],
+    "menuEvidenceImages": [],
+    "galleryImages": [],
     "offers": [],
-    "productSales": []
+    "productSales": [],
+    "announcement": {
+      "text": "Test announcement from admin test script",
+      "enabled": true
+    },
+    "event": {
+      "enabled": false,
+      "showFrom": "",
+      "showUntil": "",
+      "registrationOpen": "",
+      "registrationClose": "",
+      "eventDate": "",
+      "eventTime": ""
+    }
   },
   "metrics": {
     "totalVisits": 10,
