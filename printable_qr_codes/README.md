@@ -23,16 +23,62 @@ This folder contains **3 high-quality QR codes** ready for printing and display 
   - Table payment options
   - Delivery/takeout receipts
 
-### 3️⃣ **3_otp_bank_payment_qr.png** - OTP Bank Payment
-- **Purpose:** Accept bank transfers via OTP Bank (Hungary)
-- **Account:** SLWANS GIRGIS KARMY AMIN
+### 3️⃣ **OTP Bank Payment** - 3 Test Formats ⚠️
+
+**IMPORTANT:** OTP Bank QR codes don't always work the same way. You need to **TEST all 3 formats** with your OTP Bank mobile app to see which one opens the payment screen!
+
+#### **3a_otp_bank_hct_qr.png** - Hungarian Format (HCT)
+- **Format:** HCT (Hungarian instant payment)
+- **Most likely to work with OTP Bank app**
+- **Test this one FIRST!**
+- Currency: HUF (Hungarian Forint)
+
+#### **3b_otp_bank_epc_qr.png** - European Format (EPC)
+- **Format:** EPC/BCD (European standard)
+- **Try this if HCT doesn't work**
+- Currency: EUR (Euro)
+
+#### **3c_otp_bank_simple_qr.png** - Text Format
+- **Format:** Plain text with account details
+- **Fallback option** - can be copied manually
+- Shows all account information
+
+**Account Details (All formats):**
+- **Account Holder:** SLWANS GIRGIS KARMY AMIN
 - **Account Number:** 11710008-24108333
-- **IBAN:** HU1171000824108333
-- **Format:** EPC (works with banking apps)
-- **Use for:**
-  - Local Hungarian customers
-  - Bank transfer payments
-  - Invoice payments
+- **IBAN:** HU11710008000000002410833300 ⚠️ *Needs verification*
+
+---
+
+## ⚠️ IMPORTANT: Test OTP Bank QR Codes
+
+### How to Test:
+
+1. **Print or view on screen:** All 3 OTP QR codes
+2. **Open OTP Bank mobile app** on your phone
+3. **Find:** "Scan QR" or "Payment by QR" option
+4. **Scan each QR code:**
+   - Try **3a (HCT format)** FIRST
+   - Then **3b (EPC format)**
+   - Finally **3c (Text format)** as fallback
+5. **Check:** Which one opens the payment screen with details pre-filled?
+6. **Use only the one that works!**
+
+### If None Work:
+
+✅ **Option 1:** Verify your IBAN
+   - Open OTP Bank app → Account details → Look for IBAN
+   - Update line 14 in `tools/generate_otp_payment_qr.py`
+   - Regenerate: `python tools/generate_printable_qr_codes.py`
+
+✅ **Option 2:** Contact OTP Bank support
+   - Ask: "What QR code format does your app support?"
+   - Request: Technical documentation for QR payments
+
+✅ **Option 3:** Use Revolut instead
+   - Already working perfectly
+   - Universal compatibility
+   - Better for international customers
 
 ---
 

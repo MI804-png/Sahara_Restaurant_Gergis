@@ -107,32 +107,80 @@ create_printable_qr(
     color='#FF6B00'  # Revolut orange
 )
 
-# 3. OTP Bank Payment QR Code (EPC format)
-epc_data = """BCD
+# 3. OTP Bank Payment QR Code (Multiple formats to test)
+print("\n🏦 OTP Bank Payment - Testing 3 formats:")
+print("   You need to test which format works with your OTP Bank app!")
+
+# OTP Bank details
+account_holder = "SLWANS GIRGIS KARMY AMIN"
+account_number = "11710008-24108333"
+iban = "HU11710008000000002410833300"  # Needs verification
+
+# 3A: HCT Format (Hungarian Instant Payment)
+hct_data = f"""HCT
+001
+1
+HU
+
+{account_holder}
+{iban}
+HUF
+
+Sahara Restaurant payment"""
+
+create_printable_qr(
+    data=hct_data,
+    title="🏦 OTP Bank - HCT Format",
+    subtitle="Test Format 1: Hungarian Instant Payment",
+    filename="3a_otp_bank_hct_qr.png",
+    color='#00A758'  # OTP Bank green
+)
+
+# 3B: EPC Format (European Payment)
+epc_data = f"""BCD
 002
 1
 SCT
 
-HU1171000824108333
+{account_holder}
+{iban}
 EUR
 
-SLWANS GIRGIS KARMY AMIN
 Sahara Restaurant payment"""
 
 create_printable_qr(
     data=epc_data,
-    title="🏦 OTP Bank Payment",
-    subtitle="SLWANS GIRGIS KARMY AMIN",
-    filename="3_otp_bank_payment_qr.png",
-    color='#00A758'  # OTP Bank green
+    title="🏦 OTP Bank - EPC Format",
+    subtitle="Test Format 2: European Standard",
+    filename="3b_otp_bank_epc_qr.png",
+    color='#00A758'
+)
+
+# 3C: Simple text format
+simple_data = f"""OTP Bank Payment
+Beneficiary: {account_holder}
+Account: {account_number}
+IBAN: {iban}
+Purpose: Sahara Restaurant payment"""
+
+create_printable_qr(
+    data=simple_data,
+    title="🏦 OTP Bank - Text Format",
+    subtitle="Test Format 3: Simple Text",
+    filename="3c_otp_bank_simple_qr.png",
+    color='#00A758'
 )
 
 print("=" * 60)
 print(f"✅ All QR codes saved to: {output_dir}")
 print("\n📋 Files created:")
-print("   1_location_qr.png      - Google Maps location")
-print("   2_revolut_payment_qr.png - Revolut payment")
-print("   3_otp_bank_payment_qr.png - OTP Bank payment")
+print("   1_location_qr.png          - Google Maps location")
+print("   2_revolut_payment_qr.png   - Revolut payment")
+print("   3a_otp_bank_hct_qr.png     - OTP (Hungarian format) TEST THIS FIRST")
+print("   3b_otp_bank_epc_qr.png     - OTP (European format)")
+print("   3c_otp_bank_simple_qr.png  - OTP (Text format)")
+print("\n⚠️  OTP BANK: Test all 3 formats with your OTP Bank app!")
+print("    Only ONE of them will work - find which one opens the app")
 print("\n🖨️  Print Settings:")
 print("   - Paper: A4 (210mm x 297mm)")
 print("   - Quality: 300 DPI (high quality)")
