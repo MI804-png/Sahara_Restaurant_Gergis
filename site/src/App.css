@@ -1570,12 +1570,6 @@
   border-color: rgba(41, 128, 185, 0.18);
 }
 
-.qr-card-paypal {
-  background: linear-gradient(135deg, rgba(240, 245, 255, 0.95), rgba(230, 240, 255, 0.95));
-  border-color: rgba(0, 112, 224, 0.18);
-  box-shadow: 0 16px 36px rgba(0, 112, 224, 0.12);
-}
-
 .qr-card img {
   width: 100%;
   aspect-ratio: 1;

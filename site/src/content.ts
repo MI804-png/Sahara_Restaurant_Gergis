@@ -241,14 +241,6 @@ export const content: Record<Locale, LocaleContent> = {
     otpPaymentQrText: 'Nyissa meg az OTP Bank alkalmazást és szkennelje be ezt a QR-kódot az azonnali átutaláshoz',
     otpPaymentQrAlt: 'OTP Bank fizetési QR kód a Sahara Restaurant részére',
     otpPaymentBankDetails: 'Számlatulajdonos: SLWANS GIRGIS KARMY AMIN | Számlaszám: 11710008-24108333',
-    paypalPaymentEyebrow: 'PayPal Fizetés',
-    paypalPaymentTitle: 'Fizessen kártyával PayPal-on keresztül - regisztráció nélkül',
-    paypalPaymentIntro:
-      'Fizessen közvetlenül bankkártyájával PayPal fiók nélkül. Nincs szükség bejelentkezésre vagy regisztrációra.',
-    paypalPaymentQrTitle: 'PayPal QR Kód',
-    paypalPaymentQrText: 'Kártyás fizetés - fiók nélkül',
-    paypalPaymentQrAlt: 'PayPal fizetési QR kód a Sahara Restaurant részére',
-    paypalPaymentMethod: 'Kártyával - bejelentkezés nélkül',
     offersEyebrow: 'Ajánlatok',
     offersTitle: 'Időzített kedvezmények ügyfélkorláttal és egyértelmű időablakok.',
     offersIntro:
@@ -406,14 +398,6 @@ export const content: Record<Locale, LocaleContent> = {
     otpPaymentQrText: 'Open your OTP Bank app and scan this QR code for instant transfer',
     otpPaymentQrAlt: 'OTP Bank payment QR code for Sahara Restaurant',
     otpPaymentBankDetails: 'Account holder: SLWANS GIRGIS KARMY AMIN | Account number: 11710008-24108333',
-    paypalPaymentEyebrow: 'PayPal Payment',
-    paypalPaymentTitle: 'Pay with card via PayPal - no account required',
-    paypalPaymentIntro:
-      'Pay directly with your bank card without a PayPal account. No login or registration needed.',
-    paypalPaymentQrTitle: 'PayPal QR Code',
-    paypalPaymentQrText: 'Card payment - no account needed',
-    paypalPaymentQrAlt: 'PayPal payment QR code for Sahara Restaurant',
-    paypalPaymentMethod: 'Pay with card - no login required',
     offersEyebrow: 'Offer board',
     offersTitle: 'Timed discounts with client limits and clear schedule windows.',
     offersIntro:
@@ -571,14 +555,6 @@ export const content: Record<Locale, LocaleContent> = {
     otpPaymentQrText: 'افتح تطبيق OTP Bank وامسح رمز QR هذا للتحويل الفوري',
     otpPaymentQrAlt: 'رمز دفع OTP Bank لمطعم Sahara',
     otpPaymentBankDetails: 'صاحب الحساب: SLWANS GIRGIS KARMY AMIN | رقم الحساب: 11710008-24108333',
-    paypalPaymentEyebrow: 'الدفع عبر PayPal',
-    paypalPaymentTitle: 'ادفع ببطاقتك عبر PayPal - بدون حساب',
-    paypalPaymentIntro:
-      'ادفع مباشرة ببطاقتك المصرفية بدون حساب PayPal. لا حاجة لتسجيل الدخول.',
-    paypalPaymentQrTitle: 'رمز PayPal QR',
-    paypalPaymentQrText: 'الدفع بالبطاقة - بدون حساب',
-    paypalPaymentQrAlt: 'رمز دفع PayPal لمطعم Sahara',
-    paypalPaymentMethod: 'الدفع بالبطاقة - بدون تسجيل',
     offersEyebrow: 'لوحة العروض',
     offersTitle: 'خصومات مؤقتة بحدود العملاء ونوافذ جدولة واضحة.',
     offersIntro:

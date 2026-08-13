@@ -3352,14 +3352,6 @@ function App() {
                 <span>{copy.otpPaymentBankDetails}</span>
               </div>
             </div>
-
-            <div className="qr-card qr-card-paypal">
-              <img src="/media/paypal-payment-qr.png" alt={copy.paypalPaymentQrAlt} loading="lazy" />
-              <div className="qr-copy">
-                <strong>{copy.paypalPaymentQrTitle}</strong>
-                <span>{copy.paypalPaymentMethod}</span>
-              </div>
-            </div>
           </div>
         </div>
       </footer>
